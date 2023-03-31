@@ -69,7 +69,7 @@ export default class ViewConsentComponent extends Component {
     openDataRequestForm(patientid, consentId) {
         window.localStorage.setItem("patientId", patientid);
         window.localStorage.setItem("consentId", consentId);
-        this.props.history.push('/data-request-form');
+        this.props.history.push('/request-data');
     }
 
     render() {
@@ -90,7 +90,7 @@ export default class ViewConsentComponent extends Component {
                             <button
                                 className="btn btn-warning ml-1"
                                 disabled={this.state.problemStatus == "WAITING"}
-                                onClick={() => this.openReceipeForm(this.state.patient.patientid, this.state.problemid)} >
+                                onClick={() => this.openDataRequestForm(this.state.patient.patientid, this.state.problemid)} >
                                 Request Data </button>
                             <hr />
                         </div>

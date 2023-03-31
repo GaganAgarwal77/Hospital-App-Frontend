@@ -10,13 +10,13 @@ import AlertifyService from '../../services/AlertifyService';
 //import Select from 'react-select';
 
 var statuses = [];
-export default class CreateConsentRequest extends Component {
+export default class CreateDataRequest extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            patientid: window.localStorage.getItem("patientId"),
-
+            patientid: window.localStorage.getItem("patientId") || '',
+            consentId: window.localStorage.getItem("consentId") || '',
             problemName: '',
             problemDetail: '',
             creationDate: new Date(),
@@ -30,7 +30,7 @@ export default class CreateConsentRequest extends Component {
             options: [],
 
             doctors: [],
-            doctorId: '',
+            doctorId: window.localStorage.getItem("doctorId") ||  '',
             doctor: null,
 
             hospitals: [],
@@ -39,8 +39,7 @@ export default class CreateConsentRequest extends Component {
             hipId: '',
             hip: null,
 
-            hiType: "",
-            department:""
+            message: "",
         }
         this.loadStatus = this.loadStatus.bind(this);
         this.getAllDoctors()
@@ -72,6 +71,14 @@ export default class CreateConsentRequest extends Component {
     viewPatient(patientid) {
         window.localStorage.setItem("patientId", patientid);
         this.props.history.push('/view-patient/' + patientid);
+    }
+    viewDoctor(doctorid) {
+        window.localStorage.setItem("doctorId", doctorid);
+        this.props.history.push('/view-doctor/' + doctorid);
+    }
+    viewConsent(consentid) {
+        window.localStorage.setItem("consentId", consentid);
+        this.props.history.push('/view-consent/' + consentid);
     }
     validate(values) {
         let errors = {};
@@ -116,7 +123,7 @@ export default class CreateConsentRequest extends Component {
         this.setState({ addproblem });
     }
     render() {
-        let { hiType, department, creationDate } = this.state;
+        let { message, creationDate } = this.state;
         const { selectedOption } = this.state.options;
         const isWeekday = date => {
             const day = date.getDay(date);
@@ -125,28 +132,19 @@ export default class CreateConsentRequest extends Component {
         return (
             <div className="row">
                 <div className="col-sm-12">
-                    <h5>Consent Request Form</h5>
+                    <h5>Data Request Form</h5>
                     <hr />
                     <button
                         className="btn btn-sm btn-danger"
-                        onClick={() => this.viewPatient(this.state.patientid)} >  Back </button>
+                        onClick={() => this.viewConsent(this.state.consentId)} >  Back </button>
                     <hr />
                     <Formik
                         onSubmit={this.addProblem}
                         validate={this.validate}
-                        initialValues={{ hiType, department, creationDate }}
+                        initialValues={{ message, creationDate }}
                         enableReinitialize={true} >
                         <Form>
-                        <fieldset className="form-group">
-                            <label>Doctor *</label>
-                            <select className="form-control"
-                                value={this.state.doctorId}
-                                onChange={e => this.onChangeData('doctor', e.target.value)} >
-                                {this.state.doctors.map(doctor =>
-                                    <option key={doctor} value={doctor}>{doctor}</option>
-                                )}
-                            </select>
-                        </fieldset>
+
                         <fieldset className="form-group">
                             <label>HIU *</label>
                             <select className="form-control"
@@ -168,26 +166,15 @@ export default class CreateConsentRequest extends Component {
                             </select>
                         </fieldset>
                         <fieldset className="form-group">
-                                <label>hiType:</label>
+                                <label>message:</label>
                                 <Field
                                     className="form-control"
                                     type="text"
-                                    name="hiType"
-                                    value={hiType}
-                                    onChange={e => this.onChangeData('hiType', e.target.value)} />
-                                <ErrorMessage name="hiType" component="div" className="alert alert-danger text-danger" />
+                                    name="message"
+                                    value={message}
+                                    onChange={e => this.onChangeData('message', e.target.value)} />
+                                <ErrorMessage name="message" component="div" className="alert alert-danger text-danger" />
                             </fieldset>
-                            <fieldset className="form-group">
-                                <label>department:</label>
-                                <Field
-                                    className="form-control"
-                                    type="text"
-                                    name="department"
-                                    value={department}
-                                    onChange={e => this.onChangeData('department', e.target.value)} />
-                                <ErrorMessage name="department" component="div" className="alert alert-danger text-danger" />
-                            </fieldset>
-
                             <fieldset className="form-group">
                                 <label >Date : </label>
                                 <ReactDatePicker
