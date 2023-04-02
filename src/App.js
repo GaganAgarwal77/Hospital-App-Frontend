@@ -18,6 +18,7 @@ import NavbarComponent from './Navbar/NavbarComponent';
 import ProblemFormComponent from './Routes/PatientComponents/ProblemComponent/ProblemFormComponent';
 import CreateConsentRequest from './Routes/PatientComponents/CreateConsentRequest';
 import ViewConsentComponent from './Routes/PatientComponents/ConsentComponent/ViewConsentComponent';
+import CreateDataRequest from './Routes/PatientComponents/CreateDataRequest';
 // https://www.youtube.com/watch?v=DQ93TxqKkWo
 function App() {
   return (            
@@ -47,6 +48,8 @@ function App() {
                 <Route path="/request-consent" component={CreateConsentRequest} />
                 <Route path="/consent-request/:requestid" component={ViewConsentComponent} />
 
+                <Route path="/request-data" component={CreateDataRequest}  />
+                
                 <Route path="/add-record" component={ProblemFormComponent} />
                 <Route path="/record/:recordid" component={ViewProblemComponent} />
                 <Route path="/receipe-form" component={ReceipeFormComponent} />
