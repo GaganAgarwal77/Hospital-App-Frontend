@@ -14,7 +14,7 @@ class AddPatientComponent extends Component {
             email: '',
             phoneNo:'',
             gender: 'Male',
-            city: 'ANKARA',
+            city: '',
             bornDate: new Date(),
             status: 1,
             cities: [],
@@ -137,15 +137,8 @@ class AddPatientComponent extends Component {
                         </div>
                         <div className="form-group">
                             <label>Address *</label>
-                            <select className="form-control"
-                                value={city}
-                                onChange={e => this.onChangeData('city', e.target.value)} >
-                                {this.state.cities.map(city =>
-                                    <option key={city} value={city}>{city}</option>
-                                )}
-                            </select>
+                            <input type="text" placeholder="city" name="city" className="form-control" value={city} onChange={e => this.onChangeData('city', e.target.value)} />
                         </div>
-
                         <button className="btn btn-success" type="button" onClick={this.saveUser}>Save</button>
                     </form>
                 </div>

@@ -44,7 +44,7 @@ class ListPatientComponent extends Component {
 
     reloadPatientList() {
         PatientService.getPatients().then((res) => {
-            this.setState({ patients: res.data })
+            this.setState({ patients: res.data.patients })
             filterAllPatients = res.data
         });
     }
@@ -127,6 +127,7 @@ class ListPatientComponent extends Component {
         this.setState({patient});
     }
     render() {
+        let {patients} = this.state;
         return (
             <div className="row">
                 <div className="col-lg-12">
@@ -161,7 +162,8 @@ class ListPatientComponent extends Component {
                                 </tr>
                             </thead>
                             <tbody >
-                                {this.state.patients.map(patient =>
+                                {console.log(patients)}
+                                {patients.map(patient =>
                                     <tr className={patient.gender === "Male" ? "bg-default" : "bg-danger"} key={patient.id}>
                                         <td>{patient.name} {patient.lastname}</td>
                                         {/* {patient.id} */}

@@ -79,7 +79,7 @@ class AddDoctorComponent extends Component {
             const day = date.getDay(date);
             return day !== 0 && day !== 6;
         };
-        let { name, lastname,phoneNo, email, bornDate, gender, city } = this.state;
+        let { ehrbID, name, lastname,phoneNo, email, bornDate, gender, city } = this.state;
         return (
             <div className="row">
                 <div className="col-sm-12">
