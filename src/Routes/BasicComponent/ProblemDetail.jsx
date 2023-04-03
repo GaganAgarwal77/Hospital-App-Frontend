@@ -12,9 +12,9 @@ class ProblemDetail extends Component {
         this.openReceipeForm = this.openReceipeForm.bind(this);
     }
 
-    openReceipeForm(patientid, problemid){
-        window.localStorage.setItem("patientId", patientid);
-        window.localStorage.setItem("problemId", problemid);
+    openReceipeForm(id, problemid){
+        window.localStorage.setItem("patientID", id);
+        window.localStorage.setItem("problemID", problemid);
         this.props.history.push('/problem/receipe-form');
     }
     render() {

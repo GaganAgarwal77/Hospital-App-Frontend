@@ -14,7 +14,7 @@ class ReceipeDetailModal extends Component {
             detail: props.receipe.detail,
             drug_detail: props.receipe.drug_detail,
             delivery_date: props.receipe.delivery_date,
-            patientid: props.receipe.patientid,
+            id: props.receipe.id,
             problemid: props.receipe.problemid
         };
     }

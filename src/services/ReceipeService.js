@@ -32,7 +32,7 @@ class ReceipeService {
     }
 
     // editReceipe(patient) {
-    //     return ApiService.put(RECEIPE_API_BASE_URL + '/' + patient.patientid, patient);
+    //     return ApiService.put(RECEIPE_API_BASE_URL + '/' + patient.id, patient);
     // }
 }
 

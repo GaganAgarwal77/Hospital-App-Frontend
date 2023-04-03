@@ -48,7 +48,7 @@ class IndexPage extends Component {
                     <table>
                         <thead>
                             <tr>
-                            <th>patientid</th>
+                            <th>id</th>
                             <th>name</th>
                             <th>lastname</th>
                             <th>city</th>
@@ -58,14 +58,14 @@ class IndexPage extends Component {
                         </thead>
                         <tfoot> 
                         { this.state.patients.map(p =>
-                        <tr  key={p.patientid} >
-                            <td>{p.patientid}</td>
+                        <tr  key={p.id} >
+                            <td>{p.id}</td>
                             <td>{p.name}</td>
                             <td>{p.lastname}</td>
                             <td>{p.city}</td>
                             <td>{p.gender}</td>
                             <td>
-                                <button onClick={this.deletePatient.bind(this, p.patientid)} className="btn btn-mn btn-danger">
+                                <button onClick={this.deletePatient.bind(this, p.id)} className="btn btn-mn btn-danger">
                                     Delete
                                 </button>
                             </td>

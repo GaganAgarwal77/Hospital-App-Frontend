@@ -15,7 +15,7 @@ class ConsentRequestsComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            patientid: props.patientid,
+            id: props.id,
             problems: [],
             problem:{}
 
@@ -26,7 +26,7 @@ class ConsentRequestsComponent extends Component {
         this.getAllProblems();
     }
     getAllProblems() {
-        ProblemService.getAllByPatientId(this.state.patientid).then(res => {
+        ProblemService.getAllByid(this.state.id).then(res => {
             this.setState({ problems: res.data });
         });
     }

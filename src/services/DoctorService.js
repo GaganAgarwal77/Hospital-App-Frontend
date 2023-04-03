@@ -6,11 +6,11 @@ const CITIES = '/cities';
 class DoctorService {
 
     getDoctors() {
-        return ApiService.getAll(DOCTOR_API_BASE_URL);
+        return ApiService.getAll(DOCTOR_API_BASE_URL + '/get-all');
     }
 
-    getDoctorById(doctorId) {
-        return ApiService.getOneById(DOCTOR_API_BASE_URL + '/find-by-id/' + doctorId);
+    getDoctorById(id) {
+        return ApiService.getOneById(DOCTOR_API_BASE_URL + '/get-by-id?doctorID=' + id);
     }
 
     // fetchDoctorByEmail(email) {
@@ -22,11 +22,11 @@ class DoctorService {
     }
 
     addDoctor(doctor) {
-        return ApiService.post(DOCTOR_API_BASE_URL, doctor);
+        return ApiService.post('/api/v1/auth/register/doctor', doctor);
     }
 
     editDoctor(doctor) {
-        return ApiService.put(DOCTOR_API_BASE_URL + '/' + doctor.doctorid, doctor);
+        return ApiService.put(DOCTOR_API_BASE_URL + '/' + doctor.id, doctor);
     }
     getCities() {
         return ApiService.getAllDatas(DOCTOR_API_BASE_URL+CITIES);

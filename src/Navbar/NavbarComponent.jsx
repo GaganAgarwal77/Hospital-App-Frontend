@@ -22,10 +22,10 @@ export default class NavbarComponent extends Component {
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Doctors
+                                doctors
                                 </a>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a className="dropdown-item"  href="/doctors">Doctors</a>
+                                    <a className="dropdown-item"  href="/doctors">doctors</a>
                                     <a className="dropdown-item"  href="/add-doctor">Add Doctor</a>
                                 </div>
                             </li>

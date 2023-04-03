@@ -56,13 +56,13 @@ export default class ViewProblemComponent extends Component {
             }
         });
     }
-    viewPatient(patientid) {
-        window.localStorage.setItem("patientId", patientid);
-        this.props.history.push('/view-patient/' + patientid);
+    viewPatient(id) {
+        window.localStorage.setItem("patientID", id);
+        this.props.history.push('/view-patient/' + id);
     }
-    openReceipeForm(patientid, problemid) {
-        window.localStorage.setItem("patientId", patientid);
-        window.localStorage.setItem("problemId", problemid);
+    openReceipeForm(id, problemid) {
+        window.localStorage.setItem("patientID", id);
+        window.localStorage.setItem("problemID", problemid);
         this.props.history.push('/receipe-form');
     }
     render() {
@@ -78,11 +78,11 @@ export default class ViewProblemComponent extends Component {
                         <div className="col-sm-12">
                             <button
                                 className="btn btn-danger"
-                                onClick={() => this.viewPatient(this.state.patient.patientid)}>
+                                onClick={() => this.viewPatient(this.state.patient.id)}>
                                 Back </button>
                             <button
                                 className="btn btn-warning ml-1"
-                                onClick={() => this.openReceipeForm(this.state.patient.patientid, this.state.problemid)} >
+                                onClick={() => this.openReceipeForm(this.state.patient.id, this.state.problemid)} >
                                 Add Receipe </button>
                             <hr />
                         </div>
@@ -94,7 +94,7 @@ export default class ViewProblemComponent extends Component {
                                 city={this.state.patient.city}
                                 bornDate={this.state.patient.bornDate}
                                 gender={this.state.patient.gender}
-                                patientid={this.state.patient.patientid}
+                                id={this.state.patient.id}
                             />
                         </div>
                         <div className="col-lg-6">
@@ -104,7 +104,7 @@ export default class ViewProblemComponent extends Component {
                                 problemDetail={this.state.problemDetail}
                                 problemStatus={this.state.problemStatus}
                                 creationDate={this.state.creationDate}
-                                patientid={this.state.patient.patientid}
+                                id={this.state.patient.id}
                             />
                         </div>
                     </div>

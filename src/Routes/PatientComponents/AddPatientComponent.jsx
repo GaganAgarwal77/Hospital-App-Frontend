@@ -17,7 +17,8 @@ class AddPatientComponent extends Component {
             city: 'ANKARA',
             bornDate: new Date(),
             status: 1,
-            cities: []
+            cities: [],
+            ehrbID: ''
         }
         // this.saveUser = this.saveUser.bind(this);
         this.getAllCities();
@@ -35,7 +36,15 @@ class AddPatientComponent extends Component {
     saveUser = (e) => {
         if (!this.controlQuickly()) {
             e.preventDefault();
-            let patient = this.state;
+            let patient = {
+                firstName : this.state.name,
+                lastName : this.state.lastname,
+                emailAdress : this.state.email,
+                phoneString : this.state.phoneNo,
+                gender : this.state.gender,
+                address : this.state.city,
+                ehrbID : this.state.ehrbID,
+            }
             PatientService.addPatient(patient)
                 .then(res => {
                     this.setState({ message: 'User added successfully.' });
@@ -44,7 +53,7 @@ class AddPatientComponent extends Component {
                 }).catch((error) => {
                     console.log(error.response)
                     if (error.response) {
-                        this.setState({ errorMessage: error.response.data.message, patientid: null });
+                        this.setState({ errorMessage: error.response.data.message, id: null });
                         AlertifyService.alert(error.response.data.message);
                         //this.props.history.push('/patients');
                     }
@@ -68,7 +77,7 @@ class AddPatientComponent extends Component {
             const day = date.getDay(date);
             return day !== 0 && day !== 6;
         };
-        let { name, lastname,phoneNo, email, bornDate, gender, city } = this.state;
+        let { ehrbID, name, lastname,phoneNo, email, bornDate, gender, city } = this.state;
         return (
             <div className="row">
                 <div className="col-sm-12">
@@ -80,6 +89,10 @@ class AddPatientComponent extends Component {
                 <div className="col-sm-8">
                     <h2 className="text-center">ADD PATIENT</h2>
                     <form>
+                    <div className="form-group">
+                            <label>EHRB ID *</label>
+                            <input type="text" placeholder="ehrbID" name="ehrbID" className="form-control" value={ehrbID} onChange={e => this.onChangeData('ehrbID', e.target.value)} />
+                        </div>
                         <div className="form-group">
                             <label>Name *</label>
                             <input type="text" placeholder="name" name="name" className="form-control" value={name} onChange={e => this.onChangeData('name', e.target.value)} />
@@ -123,7 +136,7 @@ class AddPatientComponent extends Component {
                             </select>
                         </div>
                         <div className="form-group">
-                            <label>City *</label>
+                            <label>Address *</label>
                             <select className="form-control"
                                 value={city}
                                 onChange={e => this.onChangeData('city', e.target.value)} >

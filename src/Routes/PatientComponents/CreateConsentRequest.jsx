@@ -15,13 +15,13 @@ export default class CreateConsentRequest extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            patientid: window.localStorage.getItem("patientId"),
+            id: window.localStorage.getItem("patientID"),
 
             problemName: '',
             problemDetail: '',
             creationDate: new Date(),
             problemStatus: 'AYAKTA',
-            pid: props.match.params.patientid,
+            pid: props.match.params.id,
 
             status: 1,
             problemStatuses: [],
@@ -30,7 +30,7 @@ export default class CreateConsentRequest extends Component {
             options: [],
 
             doctors: [],
-            doctorId: '',
+            id: '',
             doctor: null,
 
             hospitals: [],
@@ -69,9 +69,9 @@ export default class CreateConsentRequest extends Component {
         });
     }
 
-    viewPatient(patientid) {
-        window.localStorage.setItem("patientId", patientid);
-        this.props.history.push('/view-patient/' + patientid);
+    viewPatient(id) {
+        window.localStorage.setItem("patientID", id);
+        this.props.history.push('/view-patient/' + id);
     }
     validate(values) {
         let errors = {};
@@ -90,10 +90,10 @@ export default class CreateConsentRequest extends Component {
         if (this.state.problemName === '' || this.state.problemDetail === '') {
             AlertifyService.alert("Fill in the blanks");
         } else {
-            if (this.state.patientid != null) { 
+            if (this.state.id != null) { 
                 let newProblem = this.state;
                 newProblem['status'] = 1;
-                newProblem['pid'] = this.state.patientid;
+                newProblem['pid'] = this.state.id;
                 ProblemService.add(newProblem).then(res => {
                     // let data = res.data;
                     this.setState({ 
@@ -103,7 +103,7 @@ export default class CreateConsentRequest extends Component {
                             creationDate: new Date() 
                     });
                     AlertifyService.successMessage("Saving problem for related patient is ok.. ");
-                    this.viewPatient(this.state.patientid);
+                    this.viewPatient(this.state.id);
                 });
             } else {
                 AlertifyService.alert("There is no patient..");
@@ -129,7 +129,7 @@ export default class CreateConsentRequest extends Component {
                     <hr />
                     <button
                         className="btn btn-sm btn-danger"
-                        onClick={() => this.viewPatient(this.state.patientid)} >  Back </button>
+                        onClick={() => this.viewPatient(this.state.id)} >  Back </button>
                     <hr />
                     <Formik
                         onSubmit={this.addProblem}
@@ -140,7 +140,7 @@ export default class CreateConsentRequest extends Component {
                         <fieldset className="form-group">
                             <label>Doctor *</label>
                             <select className="form-control"
-                                value={this.state.doctorId}
+                                value={this.state.id}
                                 onChange={e => this.onChangeData('doctor', e.target.value)} >
                                 {this.state.doctors.map(doctor =>
                                     <option key={doctor} value={doctor}>{doctor}</option>
@@ -207,7 +207,7 @@ export default class CreateConsentRequest extends Component {
                                 <button 
                                     type="button" 
                                     className="btn btn-secondary" 
-                                    onClick={() => this.viewPatient(this.state.patientid)}  
+                                    onClick={() => this.viewPatient(this.state.id)}  
                                     data-dismiss="modal">Close</button>
                                 <div className="dropdown-divider"></div>
                                 <button className="btn btn-success" type="submit">Save</button>

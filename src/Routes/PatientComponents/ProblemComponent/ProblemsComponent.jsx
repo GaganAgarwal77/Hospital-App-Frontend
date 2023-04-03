@@ -15,7 +15,7 @@ class ProblemsComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            patientid: props.patientid,
+            id: props.id,
             problems: [],
             problem:{}
 
@@ -26,7 +26,7 @@ class ProblemsComponent extends Component {
         this.getAllProblems();
     }
     getAllProblems() {
-        ProblemService.getAllByPatientId(this.state.patientid).then(res => {
+        ProblemService.getAllByid(this.state.id).then(res => {
             this.setState({ problems: res.data });
         });
     }
@@ -64,7 +64,7 @@ class ProblemsComponent extends Component {
         ).set({ title: "Attention" }).set({ transition: 'slide' }).show();
     }
     viewProblem(problemid) {
-        window.localStorage.setItem("problemid", problemid);
+        window.localStorage.setItem("problemID", problemid);
         this.props.history.push('/problem/' + problemid);
     }
     viewQuickly(problem){

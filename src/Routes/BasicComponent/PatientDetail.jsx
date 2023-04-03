@@ -11,7 +11,7 @@ class PatientDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            patientid: props.patientid,
+            id: props.id,
             name: props.name,
             lastname: props.lastname,
             phoneNo: props.phoneNo,
@@ -29,7 +29,7 @@ class PatientDetail extends Component {
         alertify.confirm(
             "Are you sure to edit this patient.",
             ok => {
-                window.localStorage.setItem("patientId", id);
+                window.localStorage.setItem("patientID", id);
                 this.props.history.push('/edit-patient');
             },
             cancel => {
@@ -37,10 +37,10 @@ class PatientDetail extends Component {
             }
         ).set({ title: "Attention" }).set({ transition: 'slide' }).show();
     }
-    deletePatient(patientid) {
+    deletePatient(id) {
         alertify.confirm("Are you sure to delete this patient.",
             function () {
-                PatientService.deletePatient(patientid)
+                PatientService.deletePatient(id)
                     .then(res => {
                         window.location.href = '/patients';
                         alertify.success("Deleting is ok ");
@@ -63,7 +63,7 @@ class PatientDetail extends Component {
                 <div className="card" >
                     <div className="card-header"> <h3> Patient Detail</h3>  </div>
                     <ul className="text-left list-group list-group-flush">
-                        <li className="list-group-item"><b>Patient id : </b>{this.props.patientid}</li>
+                        <li className="list-group-item"><b>Patient id : </b>{this.props.id}</li>
                         <li className="list-group-item"><b>Name : </b>{this.props.name}</li>
                         <li className="list-group-item"><b>Last Name : </b>{this.props.lastname}</li>
                         <li className="list-group-item"><b>Phone No : </b>{this.props.phoneNo}</li>
@@ -82,12 +82,12 @@ class PatientDetail extends Component {
                         <li className="list-group-item">
                             <button
                                 className="btn btn-sm btn-success"
-                                onClick={() => this.editPatient(this.props.patientid)} >
+                                onClick={() => this.editPatient(this.props.id)} >
                                 Edit
                             </button>
                             <button
                                 className="btn btn-sm btn-danger"
-                                onClick={() => this.deletePatient(this.props.patientid)}>
+                                onClick={() => this.deletePatient(this.props.id)}>
                                 Delete
                             </button>
                         </li>

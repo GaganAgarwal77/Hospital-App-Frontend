@@ -8,7 +8,8 @@ export default class ViewPatientComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            patientid: props.match.params.patientid || 1,
+            id: props.match.params.id || 1,
+            ehrbID : '',
             patient: null,
             name: '',
             lastname: '',
@@ -27,11 +28,11 @@ export default class ViewPatientComponent extends Component {
     }
     
     loadPatient() {
-        PatientService.getPatientById(this.state.patientid).then(res => {
+        PatientService.getPatientById(this.state.id).then(res => {
             let p = res.data;
             this.setState({ patient: p });
             this.setState({
-                patientid: p.patientid,
+                id: p.id,
                 problems: p.problems
             }); 
         }).catch((error) => {
@@ -46,12 +47,12 @@ export default class ViewPatientComponent extends Component {
     viewProblem(problemid) { 
         this.props.history.push('/problem/' + problemid);
     }
-    viewProblemForm(patientid){ 
-        window.localStorage.setItem("patientId", patientid);
+    viewProblemForm(id){ 
+        window.localStorage.setItem("patientID", id);
         this.props.history.push('/add-record'); 
     } 
-    viewConsentRequestForm(patientid){ 
-        window.localStorage.setItem("patientId", patientid);
+    viewConsentRequestForm(id){ 
+        window.localStorage.setItem("patientID", id);
         this.props.history.push('/request-consent'); 
     } 
 
@@ -70,12 +71,12 @@ export default class ViewPatientComponent extends Component {
                     <button
                         type="button"
                         className="btn btn-warning ml-1"
-                        onClick={() => this.viewProblemForm(this.state.patientid)}
+                        onClick={() => this.viewProblemForm(this.state.id)}
                         data-whatever="@getbootstrap">Add Record</button>
                      <button
                         type="button"
                         className="btn btn-warning ml-1"
-                        onClick={() => this.viewConsentRequestForm(this.state.patientid)}
+                        onClick={() => this.viewConsentRequestForm(this.state.id)}
                         data-whatever="@getbootstrap">Request Consent</button>
                     <hr />
                 </div>
@@ -83,7 +84,7 @@ export default class ViewPatientComponent extends Component {
                 <div className="col-lg-7">
                     {patient != null ?
                         <PatientDetail
-                            patientid={patient.patientid}
+                            id={patient.id}
                             name={patient.name}
                             lastname={patient.lastname}
                             phoneNo={patient.phoneNo}
@@ -92,7 +93,7 @@ export default class ViewPatientComponent extends Component {
                             bornDate={patient.bornDate}
                             gender={patient.gender}
                             showButtons={true}
-                            // array={['patientid','name','lastname','email','city','bornDate','gender']}
+                            // array={['id','name','lastname','email','city','bornDate','gender']}
                         />
                         : null}
                 </div> 
@@ -101,7 +102,7 @@ export default class ViewPatientComponent extends Component {
                     <img style={{ height: 300 }} src="https://cdn4.iconfinder.com/data/icons/business-colored-vol-1/100/business-colored-7-05-512.png" alt="" />
                 </div> 
                 <div className="col-lg-12">
-                        <ProblemsComponent   patientid={this.state.patientid}/>
+                        <ProblemsComponent   id={this.state.id}/>
                 </div> 
             </div>
         )

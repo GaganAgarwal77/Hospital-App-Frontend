@@ -15,13 +15,13 @@ export default class CreateDataRequest extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            patientid: window.localStorage.getItem("patientId") || '',
-            consentId: window.localStorage.getItem("consentId") || '',
+            patientid: window.localStorage.getItem("patientID") || '',
+            consentId: window.localStorage.getItem("consentID") || '',
             problemName: '',
             problemDetail: '',
             creationDate: new Date(),
             problemStatus: 'AYAKTA',
-            pid: props.match.params.patientid,
+            pid: props.match.params.id,
 
             status: 1,
             problemStatuses: [],
@@ -30,7 +30,7 @@ export default class CreateDataRequest extends Component {
             options: [],
 
             doctors: [],
-            doctorId: window.localStorage.getItem("doctorId") ||  '',
+            doctorid: window.localStorage.getItem("doctorID") ||  '',
             doctor: null,
 
             hospitals: [],
@@ -68,16 +68,16 @@ export default class CreateDataRequest extends Component {
         });
     }
 
-    viewPatient(patientid) {
-        window.localStorage.setItem("patientId", patientid);
-        this.props.history.push('/view-patient/' + patientid);
+    viewPatient(id) {
+        window.localStorage.setItem("patientID", id);
+        this.props.history.push('/view-patient/' + id);
     }
-    viewDoctor(doctorid) {
-        window.localStorage.setItem("doctorId", doctorid);
-        this.props.history.push('/view-doctor/' + doctorid);
+    viewDoctor(id) {
+        window.localStorage.setItem("doctorID", id);
+        this.props.history.push('/view-doctor/' + id);
     }
     viewConsent(consentid) {
-        window.localStorage.setItem("consentId", consentid);
+        window.localStorage.setItem("consentID", consentid);
         this.props.history.push('/view-consent/' + consentid);
     }
     validate(values) {

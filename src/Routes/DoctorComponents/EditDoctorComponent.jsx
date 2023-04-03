@@ -8,7 +8,7 @@ export default class EditDoctorComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            Doctorid: '',
+            id: '',
             name: '',
             lastname: '',
             gender: 'Male',
@@ -33,10 +33,10 @@ export default class EditDoctorComponent extends Component {
     }
 
     loadDoctor() {
-        DoctorService.getDoctorById(window.localStorage.getItem("DoctorId")).then((res) => {
+        DoctorService.getDoctorById(window.localStorage.getItem("doctorID")).then((res) => {
             let p = res.data;
             this.setState({
-                Doctorid: p.Doctorid,
+                id: p.id,
                 name: p.name,
                 lastname: p.lastname,
                 email: p.email,
@@ -50,11 +50,11 @@ export default class EditDoctorComponent extends Component {
     }
     editDoctor = (e) => {
         e.preventDefault();
-        let Doctor = this.state;
-        Doctor['Doctorid'] = window.localStorage.getItem("DoctorId");
-        DoctorService.editDoctor(Doctor).then(res => {
-            this.props.history.push('/Doctors');
-            alertify.success("Updated Doctor is ok");
+        let doctor = this.state;
+        doctor['id'] = window.localStorage.getItem("doctorID");
+        DoctorService.editDoctor(doctor).then(res => {
+            this.props.history.push('/doctors');
+            alertify.success("Updated doctor is ok");
         });
     }
     onChangeData(type, data) {

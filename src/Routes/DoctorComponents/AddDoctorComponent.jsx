@@ -17,7 +17,8 @@ class AddDoctorComponent extends Component {
             city: 'ANKARA',
             bornDate: new Date(),
             status: 1,
-            cities: []
+            cities: [],
+            ehrbID: ''
         }
         // this.saveUser = this.saveUser.bind(this);
         this.getAllCities();
@@ -35,18 +36,28 @@ class AddDoctorComponent extends Component {
     saveUser = (e) => {
         if (!this.controlQuickly()) {
             e.preventDefault();
-            let Doctor = this.state;
-            DoctorService.addDoctor(Doctor)
+            let doctor = {
+                firstName : this.state.name,
+                lastName : this.state.lastname,
+                emailAdress : this.state.email,
+                phoneString : this.state.phoneNo,
+                gender : this.state.gender,
+                address : this.state.city,
+                ehrbID : this.state.ehrbID,
+                department : "department",
+                password : "password"
+            }
+            DoctorService.addDoctor(doctor)
                 .then(res => {
                     this.setState({ message: 'User added successfully.' });
-                    this.props.history.push('/Doctors');
-                    alertify.success("Adding Doctor is ok");
+                    this.props.history.push('/doctors');
+                    alertify.success("Adding doctor is ok");
                 }).catch((error) => {
                     console.log(error.response)
                     if (error.response) {
-                        this.setState({ errorMessage: error.response.data.message, Doctorid: null });
+                        this.setState({ errorMessage: error.response.data.message, id: null });
                         AlertifyService.alert(error.response.data.message);
-                        //this.props.history.push('/Doctors');
+                        //this.props.history.push('/doctors');
                     }
                     else if (error.request) console.log(error.request);
                     else console.log(error.message);
@@ -60,7 +71,7 @@ class AddDoctorComponent extends Component {
         this.setState({ stateData });
     }
     back() {
-        this.props.history.push('/Doctors');
+        this.props.history.push('/doctors');
     }
     render() {
         //let bornDate = this.state.bornDate;
@@ -80,6 +91,10 @@ class AddDoctorComponent extends Component {
                 <div className="col-sm-8">
                     <h2 className="text-center">ADD DOCTOR</h2>
                     <form>
+                    <div className="form-group">
+                            <label>EHRB ID *</label>
+                            <input type="text" placeholder="ehrbID" name="ehrbID" className="form-control" value={ehrbID} onChange={e => this.onChangeData('ehrbID', e.target.value)} />
+                        </div>
                         <div className="form-group">
                             <label>Name *</label>
                             <input type="text" placeholder="name" name="name" className="form-control" value={name} onChange={e => this.onChangeData('name', e.target.value)} />
@@ -123,7 +138,7 @@ class AddDoctorComponent extends Component {
                             </select>
                         </div>
                         <div className="form-group">
-                            <label>City *</label>
+                            <label>Address *</label>
                             <select className="form-control"
                                 value={city}
                                 onChange={e => this.onChangeData('city', e.target.value)} >

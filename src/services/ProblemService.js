@@ -3,7 +3,7 @@ import ApiService from "./ApiService";
 
 const PROBLEM_API_BASE_URL = '/problem';
 const PROBLEM_STATUS = '/status';
-const FIND_ALL = '/find-all-by-patientid/';
+const FIND_ALL = '/find-all-by-id/';
 const PROBLEM_WİTH_PROBLEMID = '/find-by-problemid/';
 
 class ProblemService {
@@ -12,8 +12,8 @@ class ProblemService {
         return ApiService.getAll(PROBLEM_API_BASE_URL + PROBLEM_WİTH_PROBLEMID + problemid);
     }
 
-    getAllByPatientId(patientId) {
-        return ApiService.getOneById(PROBLEM_API_BASE_URL + FIND_ALL + patientId);
+    getAllByid(id) {
+        return ApiService.getOneById(PROBLEM_API_BASE_URL + FIND_ALL + id);
     }
 
     // fetchPatientByEmail(email) {
@@ -29,7 +29,7 @@ class ProblemService {
     }
 
     // editPatient(patient) {
-    //     return ApiService.put(PROBLEM_API_BASE_URL + '/' + patient.patientid, patient);
+    //     return ApiService.put(PROBLEM_API_BASE_URL + '/' + patient.id, patient);
     // }
     getProblemStatus() {
         return ApiService.getAllDatas(PROBLEM_API_BASE_URL + PROBLEM_STATUS );

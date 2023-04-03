@@ -14,7 +14,7 @@ class ReceipeDetail extends Component {
             detail: props.detail,
             drug_detail: props.drug_detail, 
             delivery_date: props.delivery_date,
-            patientid:props.patientid,
+            id:props.id,
             problemid:props.problemid
         };
     }  

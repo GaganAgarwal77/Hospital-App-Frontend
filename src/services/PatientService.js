@@ -6,11 +6,11 @@ const CITIES = '/cities';
 class PatientService {
 
     getPatients() {
-        return ApiService.getAll(PATIENT_API_BASE_URL);
+        return ApiService.getAll(PATIENT_API_BASE_URL + '/get-all-patients');
     }
 
-    getPatientById(patientId) {
-        return ApiService.getOneById(PATIENT_API_BASE_URL + '/find-by-id/' + patientId);
+    getPatientById(id) {
+        return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-details?patientID=' + id);
     }
 
     // fetchPatientByEmail(email) {
@@ -22,11 +22,11 @@ class PatientService {
     }
 
     addPatient(patient) {
-        return ApiService.post(PATIENT_API_BASE_URL, patient);
+        return ApiService.post('/auth/register/patient', patient);
     }
 
     editPatient(patient) {
-        return ApiService.put(PATIENT_API_BASE_URL + '/' + patient.patientid, patient);
+        return ApiService.put(PATIENT_API_BASE_URL + '/' + patient.id, patient);
     }
     getCities() {
         return ApiService.getAllDatas(PATIENT_API_BASE_URL+CITIES);

@@ -15,13 +15,13 @@ export default class ProblemFormComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            patientid: window.localStorage.getItem("patientId"),
+            patientid: window.localStorage.getItem("patientID"),
 
             problemName: '',
             problemDetail: '',
             creationDate: new Date(),
             problemStatus: 'AYAKTA',
-            pid: props.match.params.patientid,
+            pid: props.match.params.id,
 
             status: 1,
             problemStatuses: [],
@@ -30,7 +30,7 @@ export default class ProblemFormComponent extends Component {
             options: [],
 
             doctors: [],
-            doctorId: '',
+            doctorid: '',
             doctor: null
         }
         this.loadStatus = this.loadStatus.bind(this);
@@ -53,9 +53,9 @@ export default class ProblemFormComponent extends Component {
             this.setState({ doctors: res.data });
         });
     }
-    viewPatient(patientid) {
-        window.localStorage.setItem("patientId", patientid);
-        this.props.history.push('/view-patient/' + patientid);
+    viewPatient(id) {
+        window.localStorage.setItem("patientID", id);
+        this.props.history.push('/view-patient/' + id);
     }
     validate(values) {
         let errors = {};
@@ -124,7 +124,7 @@ export default class ProblemFormComponent extends Component {
                         <fieldset className="form-group">
                             <label>Doctor *</label>
                             <select className="form-control"
-                                value={this.state.doctorId}
+                                value={this.state.doctorid}
                                 onChange={e => this.onChangeData('doctor', e.target.value)} >
                                 {this.state.doctors.map(doctor =>
                                     <option key={doctor} value={doctor}>{doctor}</option>

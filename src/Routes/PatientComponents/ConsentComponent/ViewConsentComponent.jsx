@@ -56,19 +56,19 @@ export default class ViewConsentComponent extends Component {
             }
         });
     }
-    viewPatient(patientid) {
-        window.localStorage.setItem("patientId", patientid);
-        this.props.history.push('/view-patient/' + patientid);
+    viewPatient(id) {
+        window.localStorage.setItem("patientID", id);
+        this.props.history.push('/view-patient/' + id);
     }
-    openReceipeForm(patientid, problemid) {
-        window.localStorage.setItem("patientId", patientid);
-        window.localStorage.setItem("consentId", problemid);
+    openReceipeForm(id, problemid) {
+        window.localStorage.setItem("patientID", id);
+        window.localStorage.setItem("consentID", problemid);
         this.props.history.push('/receipe-form');
     }
 
-    openDataRequestForm(patientid, consentId) {
-        window.localStorage.setItem("patientId", patientid);
-        window.localStorage.setItem("consentId", consentId);
+    openDataRequestForm(id, consentId) {
+        window.localStorage.setItem("patientID", id);
+        window.localStorage.setItem("consentID", consentId);
         this.props.history.push('/request-data');
     }
 
@@ -85,12 +85,12 @@ export default class ViewConsentComponent extends Component {
                         <div className="col-sm-12">
                             <button
                                 className="btn btn-danger"
-                                onClick={() => this.viewPatient(this.state.patient.patientid)}>
+                                onClick={() => this.viewPatient(this.state.patient.id)}>
                                 Back </button>
                             <button
                                 className="btn btn-warning ml-1"
                                 disabled={this.state.problemStatus == "WAITING"}
-                                onClick={() => this.openDataRequestForm(this.state.patient.patientid, this.state.problemid)} >
+                                onClick={() => this.openDataRequestForm(this.state.patient.id, this.state.problemid)} >
                                 Request Data </button>
                             <hr />
                         </div>
@@ -102,7 +102,7 @@ export default class ViewConsentComponent extends Component {
                                 city={this.state.patient.city}
                                 bornDate={this.state.patient.bornDate}
                                 gender={this.state.patient.gender}
-                                patientid={this.state.patient.patientid}
+                                id={this.state.patient.id}
                             />
                         </div>
                         <div className="col-lg-6">
@@ -112,7 +112,7 @@ export default class ViewConsentComponent extends Component {
                                 problemDetail={this.state.problemDetail}
                                 problemStatus={this.state.problemStatus}
                                 creationDate={this.state.creationDate}
-                                patientid={this.state.patient.patientid}
+                                id={this.state.patient.id}
                             />
                         </div>
                     </div>

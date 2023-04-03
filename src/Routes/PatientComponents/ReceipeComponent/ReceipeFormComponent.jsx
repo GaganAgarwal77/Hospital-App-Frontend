@@ -11,7 +11,7 @@ export default class ReceipeFormComponent extends Component {
             barcode: '',
             usage:'',
             delivery_date: new Date(),
-            problemid: window.localStorage.getItem('problemId')
+            problemid: window.localStorage.getItem('problemID')
         }
         this.saveReceipe  = this.saveReceipe.bind(this);
     }
@@ -23,7 +23,7 @@ export default class ReceipeFormComponent extends Component {
     }
 
     viewProblem(problemid) {
-        window.localStorage.setItem("problemid", problemid);
+        window.localStorage.setItem("problemID", problemid);
         this.props.history.push('/problem/' + problemid);
     }
     saveReceipe = (e) => {

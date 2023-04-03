@@ -16,14 +16,14 @@ const items = [
     'Name',
     'Lastname',
     'Email',
-    'City'
+    'Address'
 ];
 let filterArray = []
 let checked = {
     name: false,
     lastname: false,
     email: false,
-    city: false
+    address: false
 }
 let filterAllPatients
 class ListPatientComponent extends Component {
@@ -48,13 +48,13 @@ class ListPatientComponent extends Component {
             filterAllPatients = res.data
         });
     }
-    deletePatient(patientid) {
+    deletePatient(id) {
         alertify.confirm(
             "Are you sure to delete this patient.",
             ok => {
-                PatientService.deletePatient(patientid).then(res => {
+                PatientService.deletePatient(id).then(res => {
                     this.setState({ message: 'User deleted successfully. ' + res });
-                    this.setState({ patients: this.state.patients.filter(patient => patient.patientid !== patientid) });
+                    this.setState({ patients: this.state.patients.filter(patient => patient.id !== id) });
                 });
                 alertify.success('to delete patient is ok');
             },
@@ -65,15 +65,15 @@ class ListPatientComponent extends Component {
         alertify.confirm(
             "Are you sure to edit this patient.",
             ok => {
-                window.localStorage.setItem("patientId", id);
+                window.localStorage.setItem("patientID", id);
                 this.props.history.push('/edit-patient');
             },
             cancel => { alertify.error('Cancel'); }
         ).set({ title: "Attention" }).set({ transition: 'slide' }).show();
     }
-    viewPatient(patientid) {
-        window.localStorage.setItem("patientId", patientid);
-        this.props.history.push('/view-patient/' + patientid);
+    viewPatient(id) {
+        window.localStorage.setItem("patientID", id);
+        this.props.history.push('/view-patient/' + id);
     }
     addPatient() {
         //window.localStorage.removeItem("userId");
@@ -156,15 +156,15 @@ class ListPatientComponent extends Component {
                                     <th>Full Name</th>
                                     <th>Email</th>
                                     <th>Born Date</th>
-                                    <th>City</th>
+                                    <th>Address</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody >
                                 {this.state.patients.map(patient =>
-                                    <tr className={patient.gender === "Male" ? "bg-default" : "bg-danger"} key={patient.patientid}>
+                                    <tr className={patient.gender === "Male" ? "bg-default" : "bg-danger"} key={patient.id}>
                                         <td>{patient.name} {patient.lastname}</td>
-                                        {/* {patient.patientid} */}
+                                        {/* {patient.id} */}
                                         <td>{patient.email}</td>
                                         <td>
                                             {patient.bornDate !== null ?
@@ -173,7 +173,7 @@ class ListPatientComponent extends Component {
                                                 </Moment>
                                                 : null}
                                         </td>
-                                        <td>{patient.city}</td>
+                                        <td>{patient.address}</td>
                                         <td>
                                             <div className="btn-group" role="group">
                                                 <button id="btnGroupDrop1"
@@ -185,7 +185,7 @@ class ListPatientComponent extends Component {
                                                 <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                     <button
                                                         className="dropdown-item"
-                                                        onClick={() => this.viewPatient(patient.patientid)} >  View </button>
+                                                        onClick={() => this.viewPatient(patient.id)} >  View </button>
                                                     <div className="dropdown-divider"></div>
                                                     <button
                                                         className="dropdown-item"
@@ -194,11 +194,11 @@ class ListPatientComponent extends Component {
                                                     <div className="dropdown-divider"></div>
                                                     <button
                                                         className="dropdown-item"
-                                                        onClick={() => this.editPatient(patient.patientid)} > Edit</button>
+                                                        onClick={() => this.editPatient(patient.id)} > Edit</button>
                                                     <div className="dropdown-divider"></div>
                                                     <button
                                                         className="dropdown-item"
-                                                        onClick={() => this.deletePatient(patient.patientid)}> Delete </button>
+                                                        onClick={() => this.deletePatient(patient.id)}> Delete </button>
                                                 </div>
                                             </div>
                                         </td>

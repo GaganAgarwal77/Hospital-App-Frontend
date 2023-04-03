@@ -16,25 +16,25 @@ const items = [
     'Name',
     'Lastname',
     'Email',
-    'City'
+    'Address'
 ];
 let filterArray = []
 let checked = {
     name: false,
     lastname: false,
     email: false,
-    city: false
+    address: false
 }
 let filterAllDoctors
 class ListDoctorComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            Doctors: [],
+            doctors: [],
             message: null,
             indeterminate: false,
             filters: [],
-            Doctor:{}
+            doctor:{}
         }
         this.reloadDoctorList = this.reloadDoctorList.bind(this); 
     }
@@ -44,40 +44,40 @@ class ListDoctorComponent extends Component {
 
     reloadDoctorList() {
         DoctorService.getDoctors().then((res) => {
-            this.setState({ Doctors: res.data })
+            this.setState({ doctors: res.data })
             filterAllDoctors = res.data
         });
     }
-    deleteDoctor(Doctorid) {
+    deleteDoctor(id) {
         alertify.confirm(
-            "Are you sure to delete this Doctor.",
+            "Are you sure to delete this doctor.",
             ok => {
-                DoctorService.deleteDoctor(Doctorid).then(res => {
+                DoctorService.deleteDoctor(id).then(res => {
                     this.setState({ message: 'User deleted successfully. ' + res });
-                    this.setState({ Doctors: this.state.Doctors.filter(Doctor => Doctor.Doctorid !== Doctorid) });
+                    this.setState({ doctors: this.state.doctors.filter(doctor => doctor.id !== id) });
                 });
-                alertify.success('to delete Doctor is ok');
+                alertify.success('to delete doctor is ok');
             },
             cancel => { alertify.error('Cancel'); }
         ).set({ title: "Attention" }).set({ transition: 'slide' }).show();
     }
     editDoctor(id) { 
         alertify.confirm(
-            "Are you sure to edit this Doctor.",
+            "Are you sure to edit this doctor.",
             ok => {
-                window.localStorage.setItem("DoctorId", id);
-                this.props.history.push('/edit-Doctor');
+                window.localStorage.setItem("doctorID", id);
+                this.props.history.push('/edit-doctor');
             },
             cancel => { alertify.error('Cancel'); }
         ).set({ title: "Attention" }).set({ transition: 'slide' }).show();
     }
-    viewDoctor(Doctorid) {
-        window.localStorage.setItem("DoctorId", Doctorid);
-        this.props.history.push('/view-Doctor/' + Doctorid);
+    viewDoctor(id) {
+        window.localStorage.setItem("doctorID", id);
+        this.props.history.push('/view-doctor/' + id);
     }
     addDoctor() {
         //window.localStorage.removeItem("userId");
-        this.props.history.push('/add-Doctor');
+        this.props.history.push('/add-doctor');
     }
     onChangeSearchByName = (e) => {
         this.filterDoctors(e.target.value);
@@ -86,15 +86,15 @@ class ListDoctorComponent extends Component {
         if (filterArray.length > 0) {
             var results = [];
             if (value !== '' && value.length > 0) {
-                results = filterAllDoctors.filter(Doctor => {
+                results = filterAllDoctors.filter(doctor => {
                     let find = false;
                     filterArray.forEach(function (filter) {
-                        let control = Doctor[filter.toLowerCase()].toLowerCase().indexOf(value.toLowerCase());
+                        let control = doctor[filter.toLowerCase()].toLowerCase().indexOf(value.toLowerCase());
                         if (control > -1) find = true;
                     });
                     return find;
                 });
-                this.setState({ Doctors: results });
+                this.setState({ doctors: results });
             }
             else { this.reloadDoctorList(); }
         } else {
@@ -123,8 +123,8 @@ class ListDoctorComponent extends Component {
             if (index !== -1) { filterArray.splice(index, 1); }
         }
     }
-    viewDoctorQuickly(Doctor){
-        this.setState({Doctor});
+    viewDoctorQuickly(doctor){
+        this.setState({doctor});
     }
     render() {
         return (
@@ -133,14 +133,14 @@ class ListDoctorComponent extends Component {
                     <button
                         className="btn btn-warning"
                         onClick={() => this.addDoctor()}>
-                        Add Doctor
+                        Add doctor
                         </button>
                     <hr />
                 </div>
                 <div className="col-lg-6" >
                     <div className="form-group">
                         <input type="text"
-                            placeholder="Search Doctor by choosing any parameter"
+                            placeholder="Search doctor by choosing any parameter"
                             name="searchByName"
                             className="form-control"
                             onChange={this.onChangeSearchByName} />
@@ -156,24 +156,24 @@ class ListDoctorComponent extends Component {
                                     <th>Full Name</th>
                                     <th>Email</th>
                                     <th>Born Date</th>
-                                    <th>City</th>
+                                    <th>Address</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody >
-                                {this.state.Doctors.map(Doctor =>
-                                    <tr className={Doctor.gender === "Male" ? "bg-default" : "bg-danger"} key={Doctor.Doctorid}>
-                                        <td>{Doctor.name} {Doctor.lastname}</td>
-                                        {/* {Doctor.Doctorid} */}
-                                        <td>{Doctor.email}</td>
+                                {this.state.doctors.map(doctor =>
+                                    <tr className={doctor.gender === "Male" ? "bg-default" : "bg-danger"} key={doctor.id}>
+                                        <td>{doctor.name} {doctor.lastname}</td>
+                                        {/* {doctor.id} */}
+                                        <td>{doctor.email}</td>
                                         <td>
-                                            {Doctor.bornDate !== null ?
+                                            {doctor.bornDate !== null ?
                                                 <Moment format="YYYY/MM/DD HH:mm">
-                                                    {Doctor.bornDate}
+                                                    {doctor.bornDate}
                                                 </Moment>
                                                 : null}
                                         </td>
-                                        <td>{Doctor.city}</td>
+                                        <td>{doctor.city}</td>
                                         <td>
                                             <div className="btn-group" role="group">
                                                 <button id="btnGroupDrop1"
@@ -185,20 +185,20 @@ class ListDoctorComponent extends Component {
                                                 <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                     <button
                                                         className="dropdown-item"
-                                                        onClick={() => this.viewDoctor(Doctor.Doctorid)} >  View </button>
+                                                        onClick={() => this.viewDoctor(doctor.id)} >  View </button>
                                                     <div className="dropdown-divider"></div>
                                                     <button
                                                         className="dropdown-item"
                                                         data-toggle="modal" data-target="#DoctorModal"
-                                                        onClick={() => this.viewDoctorQuickly(Doctor)} >  View Quickly </button>
+                                                        onClick={() => this.viewDoctorQuickly(doctor)} >  View Quickly </button>
                                                     <div className="dropdown-divider"></div>
                                                     <button
                                                         className="dropdown-item"
-                                                        onClick={() => this.editDoctor(Doctor.Doctorid)} > Edit</button>
+                                                        onClick={() => this.editDoctor(doctor.id)} > Edit</button>
                                                     <div className="dropdown-divider"></div>
                                                     <button
                                                         className="dropdown-item"
-                                                        onClick={() => this.deleteDoctor(Doctor.Doctorid)}> Delete </button>
+                                                        onClick={() => this.deleteDoctor(doctor.id)}> Delete </button>
                                                 </div>
                                             </div>
                                         </td>
@@ -206,7 +206,7 @@ class ListDoctorComponent extends Component {
                                 )}
                             </tbody>
                         </table>
-                        <DoctorDetailModal Doctor={this.state.Doctor} />
+                        <DoctorDetailModal doctor={this.state.doctor} />
                         <hr />
                         <hr />
                         <hr />

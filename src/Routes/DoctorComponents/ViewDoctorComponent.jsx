@@ -8,8 +8,9 @@ export default class ViewDoctorComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            Doctorid: props.match.params.Doctorid,
-            Doctor: null,
+            id: props.match.params.id,
+            ehrbID : '',
+            doctor: null,
             name: '',
             lastname: '',
             email: '',
@@ -27,17 +28,17 @@ export default class ViewDoctorComponent extends Component {
     }
     
     loadDoctor() {
-        DoctorService.getDoctorById(this.state.Doctorid).then(res => {
+        DoctorService.getDoctorById(this.state.id).then(res => {
             let p = res.data;
-            this.setState({ Doctor: p });
+            this.setState({ doctor: p });
             this.setState({
-                Doctorid: p.Doctorid,
+                id: p.id,
                 problems: p.problems
             }); 
         }).catch((error) => {
             if (error.response) {
                 AlertifyService.alert(error.response.data.message);
-                this.props.history.push('/Doctors');
+                this.props.history.push('/doctors');
             }
             else if (error.request) console.log(error.request);
             else console.log(error.message);
@@ -46,15 +47,15 @@ export default class ViewDoctorComponent extends Component {
     viewProblem(problemid) { 
         this.props.history.push('/problem/' + problemid);
     }
-    viewProblemForm(Doctorid){ 
-        window.localStorage.setItem("DoctorId", Doctorid);
+    viewProblemForm(id){ 
+        window.localStorage.setItem("doctorID", id);
         this.props.history.push('/add-problem'); 
     } 
     back(){
-        this.props.history.push('/Doctors'); 
+        this.props.history.push('/doctors'); 
     }
     render() { 
-        let Doctor = this.state.Doctor; 
+        let doctor = this.state.doctor; 
         return (
             <div className="row">
                 {/* Show and close modal */}
@@ -65,20 +66,20 @@ export default class ViewDoctorComponent extends Component {
  
                     <hr />
                 </div>
-                {/* Doctor Details */}
+                {/* doctor Details */}
                 <div className="col-lg-7">
-                    {Doctor != null ?
+                    {doctor != null ?
                         <DoctorDetail
-                            Doctorid={Doctor.Doctorid}
-                            name={Doctor.name}
-                            lastname={Doctor.lastname}
-                            phoneNo={Doctor.phoneNo}
-                            email={Doctor.email}
-                            city={Doctor.city}
-                            bornDate={Doctor.bornDate}
-                            gender={Doctor.gender}
+                            id={doctor.id}
+                            name={doctor.name}
+                            lastname={doctor.lastname}
+                            phoneNo={doctor.phoneNo}
+                            email={doctor.email}
+                            city={doctor.city}
+                            bornDate={doctor.bornDate}
+                            gender={doctor.gender}
                             showButtons={true}
-                            // array={['Doctorid','name','lastname','email','city','bornDate','gender']}
+                            // array={['id','name','lastname','email','city','bornDate','gender']}
                         />
                         : null}
                 </div> 
@@ -87,7 +88,7 @@ export default class ViewDoctorComponent extends Component {
                     <img style={{ height: 300 }} src="https://cdn4.iconfinder.com/data/icons/business-colored-vol-1/100/business-colored-7-05-512.png" alt="" />
                 </div> 
                 <div className="col-lg-12">
-                        <ConsentRequestsComponent      Doctorid={this.state.Doctorid}/>
+                        <ConsentRequestsComponent      id={this.state.id}/>
                 </div> 
             </div>
         )

@@ -36,13 +36,13 @@ function App() {
               <Switch>
                 <Route path="/" exact component={ListPatientComponent} />
                 <Route path="/patients" component={ListPatientComponent} />
-                <Route path="/view-patient/:patientid" component={ViewPatientComponent} />
+                <Route path="/view-patient/:id" component={ViewPatientComponent} />
                 <Route path="/add-patient" component={AddPatientComponent} />
                 <Route path="/edit-patient" component={EditPatientComponent} />
 
                 <Route path="/add-doctor" component={AddDoctorComponent} />
                 <Route path="/edit-doctor" component={EditDoctorComponent} />
-                <Route path="/view-doctor/:doctorid" component={ViewDoctorComponent} />
+                <Route path="/view-doctor/:id" component={ViewDoctorComponent} />
                 <Route path="/doctors" component={ListDoctorComponent} />
 
                 <Route path="/request-consent" component={CreateConsentRequest} />
