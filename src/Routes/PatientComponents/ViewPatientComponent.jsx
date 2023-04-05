@@ -33,7 +33,6 @@ export default class ViewPatientComponent extends Component {
             this.setState({ patient: p });
             this.setState({
                 id: p.id,
-                problems: p.problems
             }); 
         }).catch((error) => {
             if (error.response) {
@@ -44,6 +43,7 @@ export default class ViewPatientComponent extends Component {
             else console.log(error.message);
         });
     } 
+
     viewProblem(problemid) { 
         this.props.history.push('/problem/' + problemid);
     }
@@ -82,15 +82,16 @@ export default class ViewPatientComponent extends Component {
                 </div>
                 {/* Patient Details */}
                 <div className="col-lg-7">
+                    {console.log(patient)}
                     {patient != null ?
                         <PatientDetail
                             id={patient.id}
-                            name={patient.name}
-                            lastname={patient.lastname}
-                            phoneNo={patient.phoneNo}
-                            email={patient.email}
-                            city={patient.city}
-                            bornDate={patient.bornDate}
+                            name={patient.firstName}
+                            lastname={patient.lastName}
+                            phoneNo={patient.phoneString}
+                            email={patient.emailAddress}
+                            city={patient.address}
+                            bornDate={Date("2000-03-25")}
                             gender={patient.gender}
                             showButtons={true}
                             // array={['id','name','lastname','email','city','bornDate','gender']}

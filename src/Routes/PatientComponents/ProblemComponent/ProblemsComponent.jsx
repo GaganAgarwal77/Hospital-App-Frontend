@@ -5,6 +5,7 @@ import "alertifyjs/build/css/alertify.css";
 import "alertifyjs/build/css/themes/default.css";
 import "@material/react-checkbox/dist/checkbox.css";
 import ProblemService from '../../../services/ProblemService';
+import PatientService from '../../../services/PatientService';
 import AlertifyService from '../../../services/AlertifyService';
 import { withRouter } from 'react-router'; 
 import ProblemDetailModal from '../../BasicComponent/ProblemDetailModal';
@@ -26,8 +27,16 @@ class ProblemsComponent extends Component {
         this.getAllProblems();
     }
     getAllProblems() {
-        ProblemService.getAllByid(this.state.id).then(res => {
-            this.setState({ problems: res.data });
+        PatientService.getPatientRecordsById(this.state.id).then(res => {
+            let problems = res.data;
+            this.setState({ problems: problems });
+        }).catch((error) => {
+            if (error.response) {
+                AlertifyService.alert(error.response.data.message);
+                this.props.history.push('/patients');
+            }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);
         });
     }
     onChangeSearchByStatusOrDate = (e) => { this.filterProblems(e.target.value); }

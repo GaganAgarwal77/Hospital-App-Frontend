@@ -156,7 +156,7 @@ class ListPatientComponent extends Component {
                                 <tr>
                                     <th>Full Name</th>
                                     <th>Email</th>
-                                    <th>Born Date</th>
+                                    <th>Abha ID</th>
                                     <th>Address</th>
                                     <th>Action</th>
                                 </tr>
@@ -164,10 +164,11 @@ class ListPatientComponent extends Component {
                             <tbody >
                                 {console.log(patients)}
                                 {patients.map(patient =>
-                                    <tr className={patient.gender === "Male" ? "bg-default" : "bg-danger"} key={patient.id}>
-                                        <td>{patient.name} {patient.lastname}</td>
+                                    <tr className= "bg-default" key={patient.id}>
+                                        <td>{patient.firstName} {patient.lastName}</td>
                                         {/* {patient.id} */}
-                                        <td>{patient.email}</td>
+                                        <td>{patient.emailAddress}</td>
+                                        <td>{patient.ehrbID}</td>
                                         <td>
                                             {patient.bornDate !== null ?
                                                 <Moment format="YYYY/MM/DD HH:mm">

@@ -21,13 +21,6 @@ class AddPatientComponent extends Component {
             ehrbID: ''
         }
         // this.saveUser = this.saveUser.bind(this);
-        this.getAllCities();
-    }
-    getAllCities() {
-        PatientService.getCities().then(res => {
-            this.setState({ cities: res.data });
-
-        });
     }
     controlQuickly() {
         return this.state.name === null || this.state.name === '' || this.state.name === ' ' ||
@@ -66,6 +59,7 @@ class AddPatientComponent extends Component {
     onChangeData(type, data) {
         const stateData = this.state;
         stateData[type] = data;
+        console.log(type, data);
         this.setState({ stateData });
     }
     back() {

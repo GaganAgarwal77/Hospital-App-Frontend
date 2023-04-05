@@ -16,7 +16,9 @@ class PatientService {
     // fetchPatientByEmail(email) {
     //     return axios.get(PATIENT_API_BASE_URL + '/find-by-email/' + email);
     // }
-
+    getPatientRecordsById(id){
+        return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-records-by-id?patientID=' + id)   
+    }
     deletePatient(Id) {
         return ApiService.deleteById(PATIENT_API_BASE_URL + '/' + Id);
     }
