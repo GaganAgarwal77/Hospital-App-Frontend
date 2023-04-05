@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ProblemService from '../../../services/ProblemService'
+import PatientService from '../../../services/PatientService'
 //import Moment from 'react-moment';
 import PatientDetail from '../../BasicComponent/PatientDetail';
 import ProblemDetail from '../../BasicComponent/ProblemDetail';
@@ -15,8 +16,10 @@ export default class ViewProblemComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            problemid: props.match.params.problemid,
+            id: window.localStorage.getItem("patientID"),
+            problemid: props.match.params.recordid,
             patient: {},
+            record: {},
             receipes: [],
             problemDetail: null,
             problemName: null,
@@ -25,35 +28,40 @@ export default class ViewProblemComponent extends Component {
             creationDate: null,
             errorMessage: ""
         }
-        // this.loadProblemDetail();
-        this.loadProblemDetail = this.loadProblemDetail.bind(this);
+        this.loadRecordDetail = this.loadRecordDetail.bind(this);
+        this.loadPatient = this.loadPatient.bind(this);
     }
     componentDidMount() {
-        this.loadProblemDetail();
+        this.loadRecordDetail();
+        this.loadPatient();
     }
-
-    loadProblemDetail() {
-        ProblemService.getProblem(this.state.problemid).then(res => {
+    loadPatient() {
+        PatientService.getPatientById(this.state.id).then(res => {
             let p = res.data;
+            this.setState({ patient: p });
             this.setState({
-                patient:p.patient,
-                problemDetail:p.problemDetail,
-                problemName:p.problemName,
-                problemStatus:p.problemStatus,
-                creationDate:p.creationDate,
-                pid:p.pid,
-            });
+                id: p.id,
+            }); 
         }).catch((error) => {
-            // Error
             if (error.response) {
-                this.setState({ errorMessage: error.response.data.message, problemid: null });
                 AlertifyService.alert(error.response.data.message);
-                
-            } else if (error.request) {
-                console.log(error.request);
-            } else {
-                console.log(error.message);
+                this.props.history.push('/patients');
             }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);
+        });
+    } 
+    loadRecordDetail(){
+        PatientService.getRecordById(this.state.problemid).then(res => {
+            let p = res.data;
+            this.setState({ record: p });
+        }).catch((error) => {
+            if (error.response) {
+                AlertifyService.alert(error.response.data.message);
+                this.props.history.push('/patients');
+            }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);
         });
     }
     viewPatient(id) {
@@ -66,7 +74,7 @@ export default class ViewProblemComponent extends Component {
         this.props.history.push('/receipe-form');
     }
     render() {
-
+        let {patient} = this.state;
         return (
             <div className="row">
                 <div className="col-sm-12">
@@ -80,37 +88,42 @@ export default class ViewProblemComponent extends Component {
                                 className="btn btn-danger"
                                 onClick={() => this.viewPatient(this.state.patient.id)}>
                                 Back </button>
-                            <button
-                                className="btn btn-warning ml-1"
-                                onClick={() => this.openReceipeForm(this.state.patient.id, this.state.problemid)} >
-                                Add Receipe </button>
                             <hr />
                         </div>
                         <div className="col-lg-6">
-                            <PatientDetail
-                                name={this.state.patient.name}
-                                lastname={this.state.patient.lastname}
-                                email={this.state.patient.email}
-                                city={this.state.patient.city}
-                                bornDate={this.state.patient.bornDate}
-                                gender={this.state.patient.gender}
-                                id={this.state.patient.id}
-                            />
+                        <PatientDetail
+                            id={patient.id}
+                            name={patient.firstName}
+                            lastname={patient.lastName}
+                            phoneNo={patient.phoneString}
+                            email={patient.emailAddress}
+                            city={patient.address}
+                            bornDate={Date("2000-03-25")}
+                            gender={patient.gender}
+                            showButtons={true}
+                            // array={['id','name','lastname','email','city','bornDate','gender']}
+                        />
                         </div>
+
+
                         <div className="col-lg-6">
                             <ProblemDetail
-                                problemid={this.state.problemid}
-                                problemName={this.state.problemName}
-                                problemDetail={this.state.problemDetail}
-                                problemStatus={this.state.problemStatus}
-                                creationDate={this.state.creationDate}
-                                id={this.state.patient.id}
+                                recordID={this.state.record.recordID}
+                                patientID={this.state.record.patientID}
+                                doctorID={this.state.record.doctorID}
+                                department={this.state.record.department}
+                                hiType={this.state.record.hiType}
+                                height={this.state.record.height}
+                                weight={this.state.record.weight}
+                                bp={this.state.record.bp}
+                                heartRate={this.state.record.heartRate}
+                                problems={this.state.record.problems}
+                                diagnosis={this.state.record.diagnosis}
+                                prescription={this.state.record.prescription}
+                                creationDate={this.state.record.timeStamp}
                             />
                         </div>
                     </div>
-                </div>
-                <div className="col-sm-12">
-                    <ReceipesComponent  problemid={this.state.problemid} />
                 </div>
             </div>
         )

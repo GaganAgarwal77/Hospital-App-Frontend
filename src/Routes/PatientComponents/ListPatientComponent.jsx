@@ -169,13 +169,6 @@ class ListPatientComponent extends Component {
                                         {/* {patient.id} */}
                                         <td>{patient.emailAddress}</td>
                                         <td>{patient.ehrbID}</td>
-                                        <td>
-                                            {patient.bornDate !== null ?
-                                                <Moment format="YYYY/MM/DD HH:mm">
-                                                    {patient.bornDate}
-                                                </Moment>
-                                                : null}
-                                        </td>
                                         <td>{patient.address}</td>
                                         <td>
                                             <div className="btn-group" role="group">

@@ -8,6 +8,7 @@ import ProblemService from '../../../services/ProblemService';
 import AlertifyService from '../../../services/AlertifyService';
 import { withRouter } from 'react-router'; 
 import ProblemDetailModal from '../../BasicComponent/ProblemDetailModal';
+import DoctorService from '../../../services/DoctorService';
 
 let filterAllProblem = [];
 let filters = ["problemName", "problemStatus"];
@@ -26,8 +27,16 @@ class ConsentRequestsComponent extends Component {
         this.getAllProblems();
     }
     getAllProblems() {
-        ProblemService.getAllByid(this.state.id).then(res => {
-            this.setState({ problems: res.data });
+        DoctorService.getConsentRequestByDoctorId(this.state.id).then(res => {
+            let problems = res.data.consent_objs;
+            this.setState({ problems: problems });
+        }).catch((error) => {
+            if (error.response) {
+                AlertifyService.alert(error.response.data.message);
+                this.props.history.push('/patients');
+            }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);
         });
     }
     onChangeSearchByStatusOrDate = (e) => { this.filterProblems(e.target.value); }

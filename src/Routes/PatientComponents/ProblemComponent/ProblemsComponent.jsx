@@ -74,7 +74,8 @@ class ProblemsComponent extends Component {
     }
     viewProblem(problemid) {
         window.localStorage.setItem("problemID", problemid);
-        this.props.history.push('/problem/' + problemid);
+        window.localStorage.setItem("patientID", this.state.id);
+        this.props.history.push('/record/' + problemid);
     }
     viewQuickly(problem){
         this.setState({problem:problem});
@@ -100,24 +101,23 @@ class ProblemsComponent extends Component {
                     <table className="table table-bordered table-sm table-dark table-hover">
                         <thead>
                             <tr>
-                                <th>Record Name </th>
-                                <th>Record Detail</th>
-                                <th>Record Status</th>
-                                <th>Create Date</th>
+                                <th>Doctor ID</th>
+                                <th>Visit Type</th>
+                                <th>Department</th>
+                                <th>Creation Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {problems.map(problem =>
 
-                                <tr className="bg-default" key={problem.problemid}>
-                                    <td>{problem.problemName}</td>
-                                    <td>{this.limitingPatientDetail(problem.problemDetail)}</td>
-
-                                    <td>{problem.problemStatus}</td>
+                                <tr className="bg-default" key={problem.recordID}>
+                                    <td>{problem.doctorID}</td>
+                                    <td>{problem.hiType}</td>
+                                    <td>{problem.department}</td>
                                     <td>
                                         <Moment format="YYYY/MM/DD HH:mm">
-                                            {problem.creationDate}
+                                            {Date(problem.timeStamp)}
                                         </Moment>
                                     </td>
                                     <td>
@@ -132,7 +132,7 @@ class ProblemsComponent extends Component {
                                             <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                 <button
                                                     className="dropdown-item"
-                                                    onClick={() => this.viewProblem(problem.problemid)} >
+                                                    onClick={() => this.viewProblem(problem.recordID)} >
                                                     View </button>
                                                 <div className="dropdown-divider"></div>
                                                 <button
@@ -143,7 +143,7 @@ class ProblemsComponent extends Component {
                                                 <div className="dropdown-divider"></div>
                                                 <button
                                                     className="dropdown-item"
-                                                    onClick={() => this.deleteProblem(problem.problemid)} >
+                                                    onClick={() => this.deleteProblem(problem.recordID)} >
                                                     Delete </button>
                                             </div>
                                         </div>

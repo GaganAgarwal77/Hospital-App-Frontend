@@ -17,12 +17,16 @@ class DoctorService {
     //     return axios.get(DOCTOR_API_BASE_URL + '/find-by-email/' + email);
     // }
 
+    getConsentRequestByDoctorId(id) {
+        return ApiService.getAll('/consent/fetch-id?doctorID='+id);
+    }
+
     deleteDoctor(Id) {
         return ApiService.deleteById(DOCTOR_API_BASE_URL + '/' + Id);
     }
 
     addDoctor(doctor) {
-        return ApiService.post('/api/v1/auth/register/doctor', doctor);
+        return ApiService.post('/auth/register/doctor', doctor);
     }
 
     editDoctor(doctor) {

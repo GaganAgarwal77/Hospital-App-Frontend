@@ -14,21 +14,15 @@ class AddDoctorComponent extends Component {
             email: '',
             phoneNo:'',
             gender: 'Male',
-            city: 'ANKARA',
+            city: '',
             bornDate: new Date(),
             status: 1,
             cities: [],
             ehrbID: ''
         }
         // this.saveUser = this.saveUser.bind(this);
-        this.getAllCities();
     }
-    getAllCities() {
-        DoctorService.getCities().then(res => {
-            this.setState({ cities: res.data });
 
-        });
-    }
     controlQuickly() {
         return this.state.name === null || this.state.name === '' || this.state.name === ' ' ||
             this.state.lastname === null || this.state.lastname === '' || this.state.lastname === ' ';
@@ -40,12 +34,12 @@ class AddDoctorComponent extends Component {
                 firstName : this.state.name,
                 lastName : this.state.lastname,
                 emailAdress : this.state.email,
+                password : "password",
                 phoneString : this.state.phoneNo,
                 gender : this.state.gender,
                 address : this.state.city,
+                Department : "department",
                 ehrbID : this.state.ehrbID,
-                department : "department",
-                password : "password"
             }
             DoctorService.addDoctor(doctor)
                 .then(res => {
@@ -139,15 +133,8 @@ class AddDoctorComponent extends Component {
                         </div>
                         <div className="form-group">
                             <label>Address *</label>
-                            <select className="form-control"
-                                value={city}
-                                onChange={e => this.onChangeData('city', e.target.value)} >
-                                {this.state.cities.map(city =>
-                                    <option key={city} value={city}>{city}</option>
-                                )}
-                            </select>
+                            <input type="text" placeholder="city" name="city" className="form-control" value={city} onChange={e => this.onChangeData('city', e.target.value)} />
                         </div>
-
                         <button className="btn btn-success" type="button" onClick={this.saveUser}>Save</button>
                     </form>
                 </div>

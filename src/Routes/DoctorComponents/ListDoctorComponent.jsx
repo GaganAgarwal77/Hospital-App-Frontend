@@ -44,7 +44,7 @@ class ListDoctorComponent extends Component {
 
     reloadDoctorList() {
         DoctorService.getDoctors().then((res) => {
-            this.setState({ doctors: res.data })
+            this.setState({ doctors: res.data.doctors })
             filterAllDoctors = res.data
         });
     }
@@ -127,6 +127,7 @@ class ListDoctorComponent extends Component {
         this.setState({doctor});
     }
     render() {
+        let {doctors} = this.state;
         return (
             <div className="row">
                 <div className="col-lg-12">
@@ -155,25 +156,19 @@ class ListDoctorComponent extends Component {
                                 <tr>
                                     <th>Full Name</th>
                                     <th>Email</th>
-                                    <th>Born Date</th>
+                                    <th>Abha ID</th>
                                     <th>Address</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody >
-                                {this.state.doctors.map(doctor =>
-                                    <tr className={doctor.gender === "Male" ? "bg-default" : "bg-danger"} key={doctor.id}>
-                                        <td>{doctor.name} {doctor.lastname}</td>
+                                {doctors.map(doctor =>
+                                    <tr className="bg-default" key={doctor.id}>
+                                        <td>{doctor.firstName} {doctor.lastName}</td>
                                         {/* {doctor.id} */}
-                                        <td>{doctor.email}</td>
-                                        <td>
-                                            {doctor.bornDate !== null ?
-                                                <Moment format="YYYY/MM/DD HH:mm">
-                                                    {doctor.bornDate}
-                                                </Moment>
-                                                : null}
-                                        </td>
-                                        <td>{doctor.city}</td>
+                                        <td>{doctor.emailAddress}</td>
+                                        <td>{doctor.doctorEhrbID}</td>
+                                        <td>{doctor.address}</td>
                                         <td>
                                             <div className="btn-group" role="group">
                                                 <button id="btnGroupDrop1"

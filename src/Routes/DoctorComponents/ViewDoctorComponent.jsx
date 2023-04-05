@@ -33,7 +33,6 @@ export default class ViewDoctorComponent extends Component {
             this.setState({ doctor: p });
             this.setState({
                 id: p.id,
-                problems: p.problems
             }); 
         }).catch((error) => {
             if (error.response) {
@@ -71,12 +70,12 @@ export default class ViewDoctorComponent extends Component {
                     {doctor != null ?
                         <DoctorDetail
                             id={doctor.id}
-                            name={doctor.name}
-                            lastname={doctor.lastname}
-                            phoneNo={doctor.phoneNo}
-                            email={doctor.email}
-                            city={doctor.city}
-                            bornDate={doctor.bornDate}
+                            name={doctor.firstName}
+                            lastname={doctor.lastName}
+                            phoneNo={doctor.phoneString}
+                            email={doctor.emailAddress}
+                            city={doctor.address}
+                            bornDate={Date("2000-03-25")}
                             gender={doctor.gender}
                             showButtons={true}
                             // array={['id','name','lastname','email','city','bornDate','gender']}

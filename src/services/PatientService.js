@@ -19,6 +19,13 @@ class PatientService {
     getPatientRecordsById(id){
         return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-records-by-id?patientID=' + id)   
     }
+    getRecordById(id){
+        return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-record?recordID=' + id)   
+    }
+    addPatientRecord(patientRecord){
+        return ApiService.post(PATIENT_API_BASE_URL + '/add-record', patientRecord);
+    }
+
     deletePatient(Id) {
         return ApiService.deleteById(PATIENT_API_BASE_URL + '/' + Id);
     }

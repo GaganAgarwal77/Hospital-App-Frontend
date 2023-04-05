@@ -7,6 +7,7 @@ import ReactDatePicker from 'react-datepicker';
 import Select from 'react-select';
 import "react-datepicker/dist/react-datepicker.css";
 import AlertifyService from '../../../services/AlertifyService';
+import PatientService from '../../../services/PatientService';
 //import Select from 'react-select';
 
 var statuses = [];
@@ -16,41 +17,29 @@ export default class ProblemFormComponent extends Component {
         super(props)
         this.state = {
             patientid: window.localStorage.getItem("patientID"),
-
-            problemName: '',
-            problemDetail: '',
-            creationDate: new Date(),
-            problemStatus: 'AYAKTA',
-            pid: props.match.params.id,
-
-            status: 1,
-            problemStatuses: [],
-            errorMessage: "",
-            selectedOption: null,
-            options: [],
+            doctorid: '',
 
             doctors: [],
-            doctorid: '',
-            doctor: null
+            doctor: null,
+
+            department: '',
+            hiType: '',
+            height: '',
+            weight: '',
+            bp: '',
+            heartRate: '',
+
+            problems: '',
+            diagnosis: '',
+            prescription: '',
+
+            creationDate: new Date(),
         }
-        this.loadStatus = this.loadStatus.bind(this);
         this.getAllDoctors()
-    }
-    componentDidMount() {
-        this.loadStatus();
-    }
-    loadStatus() {
-        statuses = [];
-        ProblemService.getProblemStatus().then(res => {
-            this.setState({ problemStatuses: res.data });
-            for (var i = 0; i < this.state.problemStatuses.length; i++) {
-                statuses.push({ value: this.state.problemStatuses[i], label: this.state.problemStatuses[i] })
-            }
-        });
     }
     getAllDoctors() {
         DoctorService.getDoctors().then(res => {
-            this.setState({ doctors: res.data });
+            this.setState({ doctors: res.data.doctors });
         });
     }
     viewPatient(id) {
@@ -59,49 +48,80 @@ export default class ProblemFormComponent extends Component {
     }
     validate(values) {
         let errors = {};
-        if (!values.problemName)
-            errors.problemName = 'Enter a Problem Name!';
-        else if (values.problemName.length < 5)
-            errors.problemName = 'Enter at least 5 characters into Problem Name!';
 
-        if (!values.problemDetail)
-            errors.problemDetail = 'Enter a Problem Detail!';
-        else if (values.problemDetail.length < 5)
-            errors.problemDetail = 'Enter at least 5 characters into Problem Detail!';
+        if (!values.department) {
+            errors.department = 'Enter department';
+        }
+        if (!values.hiType) {
+            errors.hiType = 'Enter visit type';
+        }
+        if (!values.height) {
+            errors.height = 'Enter height';
+        }
+        if (!values.weight) {
+            errors.weight = 'Enter weight';
+        }
+        if (!values.bp) {
+            errors.bp = 'Enter blood pressure';
+        }
+        if (!values.heartRate) {
+            errors.heartRate = 'Enter heart rate';
+        }
+        if (!values.problems) {
+            errors.problems = 'Enter problems';
+        }
+        if (!values.diagnosis) {
+            errors.diagnosis = 'Enter diagnosis';
+        }
+        if (!values.prescription) {
+            errors.prescription = 'Enter prescription';
+        }
+        if (!values.creationDate) {
+            errors.creationDate = 'Enter creation date';
+        }
+
         return errors;
     }
     addProblem = () => {
-        if (this.state.problemName === '' || this.state.problemDetail === '') {
+        if (this.state.doctorid === '' || this.state.department === '' || this.state.hiType === '' || this.state.height === '' || this.state.weight === '' || this.state.bp === '' || this.state.heartRate === '' || this.state.problems === '' || this.state.diagnosis === '' || this.state.prescription === '') {
             AlertifyService.alert("Fill in the blanks");
         } else {
             if (this.state.patientid != null) { 
-                let newProblem = this.state;
-                newProblem['status'] = 1;
-                newProblem['pid'] = this.state.patientid;
-                ProblemService.add(newProblem).then(res => {
-                    // let data = res.data;
-                    this.setState({ 
-                            problemName: '',
-                            problemDetail: '',
-                            problemStatus: 'AYAKTA',
-                            creationDate: new Date() 
-                    });
+                let record = {
+                    patientID: this.state.patientid,
+                    doctorID: this.state.doctorid,
+                    department: this.state.department,
+                    hiType: this.state.hiType,
+                    metaData: {
+                        height: this.state.height,
+                        weight: this.state.weight,
+                        bp: this.state.bp,
+                        heartRate: this.state.heartRate
+                    },
+                    data : {
+                        problems: this.state.problems,
+                        diagnosis: this.state.diagnosis,
+                        prescription: this.state.prescription
+                    }
+                }
+                console.log(record)
+                PatientService.addPatientRecord(record).then(res => {
                     AlertifyService.successMessage("Saving problem for related patient is ok.. ");
                     this.viewPatient(this.state.patientid);
                 });
             } else {
-                AlertifyService.alert("There is no patient..");
+                AlertifyService.alert("Error adding record");
             }
         }
     }
     onChangeData(type, e) {
         const addproblem = this.state;
         addproblem[type] = e;
+        console.log(type, e)
         this.setState({ addproblem });
     }
     render() {
-        let { problemName, problemDetail, problemStatus, creationDate } = this.state;
-        const { selectedOption } = this.state.options;
+        let { department, hiType, height, weight, bp, heartRate, problems, diagnosis, prescription, creationDate } = this.state;
         const isWeekday = date => {
             const day = date.getDay(date);
             return day !== 0 && day !== 6;
@@ -118,49 +138,109 @@ export default class ProblemFormComponent extends Component {
                     <Formik
                         onSubmit={this.addProblem}
                         validate={this.validate}
-                        initialValues={{ problemName, problemDetail, problemStatus, creationDate }}
+                        initialValues={{ department, hiType, height, weight, bp, heartRate, problems, diagnosis, prescription, creationDate }}
                         enableReinitialize={true} >
                         <Form>
                         <fieldset className="form-group">
                             <label>Doctor *</label>
                             <select className="form-control"
-                                value={this.state.doctorid}
-                                onChange={e => this.onChangeData('doctor', e.target.value)} >
+                                value={this.state.doctor?.firstName}
+                                onChange={e => this.onChangeData('doctorid', e.target.value)} >
                                 {this.state.doctors.map(doctor =>
-                                    <option key={doctor} value={doctor}>{doctor}</option>
+                                    <option key={doctor.id} value={doctor.id}>{doctor.firstName}</option>
                                 )}
                             </select>
                         </fieldset>
-                            <fieldset className="form-group">
-                                <label>Problem Name :</label>
+                        <fieldset className="form-group">
+                                <label>Department :</label>
                                 <Field
                                     className="form-control"
                                     type="text"
-                                    name="problemName"
-                                    value={problemName}
-                                    onChange={e => this.onChangeData('problemName', e.target.value)} />
-                                <ErrorMessage name="problemName" component="div" className="alert alert-danger text-danger" />
+                                    name="department"
+                                    value={department}
+                                    onChange={e => this.onChangeData('department', e.target.value)} />
+                                <ErrorMessage name="department" component="div" className="alert alert-danger text-danger" />
                             </fieldset>
                             <fieldset className="form-group">
-                                <label>Problem Detail :</label>
+                                <label>Visit Type :</label>
                                 <Field
                                     className="form-control"
                                     type="text"
-                                    name="problemDetail"
-                                    value={problemDetail}
-                                    onChange={e => this.onChangeData('problemDetail', e.target.value)} />
-                                <ErrorMessage name="problemDetail" component="div" className="alert alert-danger text-danger" />
+                                    name="hiType"
+                                    value={hiType}
+                                    onChange={e => this.onChangeData('hiType', e.target.value)} />
+                                <ErrorMessage name="hiType" component="div" className="alert alert-danger text-danger" />
                             </fieldset>
-                            {this.state.problemStatuses.length > 0 ?
-                                <fieldset className="form-group">
-                                    <label >Status : {statuses}  </label>
-                                    <Select
-                                        value={selectedOption}
-                                        onChange={e => this.onChangeData('problemStatus', e.value)}
-                                        options={statuses}
-                                    />
-                                </fieldset>
-                                : null}
+                            <fieldset className="form-group">
+                                <label>Height :</label>
+                                <Field
+                                    className="form-control"
+                                    type="text"
+                                    name="height"
+                                    value={height}
+                                    onChange={e => this.onChangeData('height', e.target.value)} />
+                                <ErrorMessage name="height" component="div" className="alert alert-danger text-danger" />
+                            </fieldset>
+                            <fieldset className="form-group">
+                                <label>Weight :</label>
+                                <Field
+                                    className="form-control"
+                                    type="text"
+                                    name="weight"
+                                    value={weight}
+                                    onChange={e => this.onChangeData('weight', e.target.value)} />
+                                <ErrorMessage name="weight" component="div" className="alert alert-danger text-danger" />
+                            </fieldset>
+                            <fieldset className="form-group">
+                                <label>Blood Pressure :</label>
+                                <Field
+                                    className="form-control"
+                                    type="text"
+                                    name="bp"
+                                    value={bp}
+                                    onChange={e => this.onChangeData('bp', e.target.value)} />
+                                <ErrorMessage name="bp" component="div" className="alert alert-danger text-danger" />
+                            </fieldset>
+                            <fieldset className="form-group">
+                                <label>Heart Rate :</label>
+                                <Field
+                                    className="form-control"
+                                    type="text"
+                                    name="heartRate"
+                                    value={heartRate}
+                                    onChange={e => this.onChangeData('heartRate', e.target.value)} />
+                                <ErrorMessage name="heartRate" component="div" className="alert alert-danger text-danger" />
+                            </fieldset>
+                            <fieldset className="form-group">
+                                <label>Problems :</label>
+                                <Field
+                                    className="form-control"
+                                    type="text"
+                                    name="problems"
+                                    value={problems}
+                                    onChange={e => this.onChangeData('problems', e.target.value)} />
+                                <ErrorMessage name="problems" component="div" className="alert alert-danger text-danger" />
+                            </fieldset>
+                            <fieldset className="form-group">
+                                <label>Diagnosis :</label>
+                                <Field
+                                    className="form-control"
+                                    type="text"
+                                    name="diagnosis"
+                                    value={diagnosis}
+                                    onChange={e => this.onChangeData('diagnosis', e.target.value)} />
+                                <ErrorMessage name="diagnosis" component="div" className="alert alert-danger text-danger" />
+                            </fieldset>
+                            <fieldset className="form-group">
+                                <label>Prescription :</label>
+                                <Field
+                                    className="form-control"
+                                    type="text"
+                                    name="prescription"
+                                    value={prescription}
+                                    onChange={e => this.onChangeData('prescription', e.target.value)} />
+                                <ErrorMessage name="prescription" component="div" className="alert alert-danger text-danger" />
+                            </fieldset>
                             <fieldset className="form-group">
                                 <label >Date : </label>
                                 <ReactDatePicker
