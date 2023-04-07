@@ -7,6 +7,7 @@ import ReactDatePicker from 'react-datepicker';
 import Select from 'react-select';
 import "react-datepicker/dist/react-datepicker.css";
 import AlertifyService from '../../services/AlertifyService';
+import PatientService from '../../services/PatientService';
 //import Select from 'react-select';
 
 var statuses = [];
@@ -17,20 +18,11 @@ export default class CreateConsentRequest extends Component {
         this.state = {
             id: window.localStorage.getItem("patientID"),
 
-            problemName: '',
-            problemDetail: '',
-            creationDate: new Date(),
-            problemStatus: 'AYAKTA',
-            pid: props.match.params.id,
-
-            status: 1,
-            problemStatuses: [],
-            errorMessage: "",
-            selectedOption: null,
-            options: [],
+            patientid: window.localStorage.getItem("patientID"),
+            patient: null,
 
             doctors: [],
-            id: '',
+            doctorid: '',
             doctor: null,
 
             hospitals: [],
@@ -40,29 +32,27 @@ export default class CreateConsentRequest extends Component {
             hip: null,
 
             hiType: "",
-            department:""
+            department:"",
+
+            dateFrom: new Date(),
+            dateTo: new Date(),
+            valdityTill: new Date()
         }
-        this.loadStatus = this.loadStatus.bind(this);
         this.getAllDoctors()
+        this.getPatient()
     }
     componentDidMount() {
-        this.loadStatus();
-    }
-    loadStatus() {
-        statuses = [];
-        ProblemService.getProblemStatus().then(res => {
-            this.setState({ problemStatuses: res.data });
-            for (var i = 0; i < this.state.problemStatuses.length; i++) {
-                statuses.push({ value: this.state.problemStatuses[i], label: this.state.problemStatuses[i] })
-            }
-        });
     }
     getAllDoctors() {
-        DoctorService.getDoctors().then(res => {
-            this.setState({ doctors: res.data });
+        DoctorService.getDoctors().then((res) => {
+            this.setState({ doctors: res.data.doctors })
         });
     }
-
+    getPatient(){
+        PatientService.getPatientById(this.state.id).then((res) => {
+            this.setState({ patient: res.data })
+        });
+    }
     getAllHospitals() {
         DoctorService.getHospitals().then(res => {
             this.setState({ hospitals: res.data });
@@ -75,40 +65,49 @@ export default class CreateConsentRequest extends Component {
     }
     validate(values) {
         let errors = {};
-        if (!values.problemName)
-            errors.problemName = 'Enter a Problem Name!';
-        else if (values.problemName.length < 5)
-            errors.problemName = 'Enter at least 5 characters into Problem Name!';
-
-        if (!values.problemDetail)
-            errors.problemDetail = 'Enter a Problem Detail!';
-        else if (values.problemDetail.length < 5)
-            errors.problemDetail = 'Enter at least 5 characters into Problem Detail!';
+        if (!values.hiType) {
+            errors.hiType = 'Enter hiType';
+        } else if (values.hiType.length < 3) {
+            errors.hiType = 'Enter at least 3 Characters in hiType';
+        }
+        if (!values.department) {
+            errors.department = 'Enter department';
+        } else if (values.department.length < 3) {
+            errors.department = 'Enter at least 3 Characters in department';
+        }
         return errors;
     }
     addProblem = () => {
-        if (this.state.problemName === '' || this.state.problemDetail === '') {
-            AlertifyService.alert("Fill in the blanks");
-        } else {
-            if (this.state.id != null) { 
-                let newProblem = this.state;
-                newProblem['status'] = 1;
-                newProblem['pid'] = this.state.id;
-                ProblemService.add(newProblem).then(res => {
-                    // let data = res.data;
-                    this.setState({ 
-                            problemName: '',
-                            problemDetail: '',
-                            problemStatus: 'AYAKTA',
-                            creationDate: new Date() 
-                    });
-                    AlertifyService.successMessage("Saving problem for related patient is ok.. ");
-                    this.viewPatient(this.state.id);
+        // if (this.state.doctorid === '' || this.state.hiuId === '' || this.state.hipId === '' || this.state.hiType === '' || this.state.department === '') {
+        //     AlertifyService.alert("Fill in the blanks");
+        // } else {
+            if (this.state.id != null) {
+                // in doctors list find doctor with doctorid
+                let doctor = this.state.doctors.find(doctor => doctor.id === this.state.doctorid);
+                let consentRequest = {
+                    ehrbID: this.state.patient.ehrbID,
+                    doctorID: doctor.doctorEhrbID,
+                    hiuID: this.state.hiu?.hospitalId,
+                    hipID: this.state.hip?.hospitalId,
+                    departments: [this.state.department],
+                    hiType: [this.state.hiType],
+                    permission: {
+                        dateRange : {
+                            from: this.state.dateFrom,
+                            to: this.state.dateTo
+                        },
+                        consent_validity: this.state.valdityTill
+                    }
+                }
+                console.log(this.state.doctor, consentRequest);
+                DoctorService.generateConsentRequest(consentRequest).then(res => {
+                    AlertifyService.successMessage("Generating consent request for related patient is ok.. ");
+                    this.viewPatient(this.state.patientid);
                 });
             } else {
-                AlertifyService.alert("There is no patient..");
+                AlertifyService.alert("Error..");
             }
-        }
+        // }
     }
     onChangeData(type, e) {
         const addproblem = this.state;
@@ -116,8 +115,8 @@ export default class CreateConsentRequest extends Component {
         this.setState({ addproblem });
     }
     render() {
-        let { hiType, department, creationDate } = this.state;
-        const { selectedOption } = this.state.options;
+        {console.log(this.state)}
+        let { hiType, department, creationDate, dateFrom, dateTo, valdityTill } = this.state;
         const isWeekday = date => {
             const day = date.getDay(date);
             return day !== 0 && day !== 6;
@@ -140,30 +139,30 @@ export default class CreateConsentRequest extends Component {
                         <fieldset className="form-group">
                             <label>Doctor *</label>
                             <select className="form-control"
-                                value={this.state.id}
-                                onChange={e => this.onChangeData('doctor', e.target.value)} >
+                                value={this.state.doctor?.firstName}
+                                onChange={e => this.onChangeData('doctorid', e.target.value)} >
                                 {this.state.doctors.map(doctor =>
-                                    <option key={doctor} value={doctor}>{doctor}</option>
+                                    <option key={doctor.id} value={doctor.id}>{doctor.firstName}</option>
                                 )}
                             </select>
                         </fieldset>
                         <fieldset className="form-group">
                             <label>HIU *</label>
                             <select className="form-control"
-                                value={this.state.hiuId}
-                                onChange={e => this.onChangeData('hiu', e.target.value)} >
+                                value={this.state.hiu?.hospitalName}
+                                onChange={e => this.onChangeData('hiuId', e.target.value)} >
                                 {this.state.hospitals.map(hiu =>
-                                    <option key={hiu} value={hiu}>{hiu}</option>
+                                    <option key={hiu.hospitalId} value={hiu.hospitalId}>{hiu.hospitalName}</option>
                                 )}
                             </select>
                         </fieldset>
                         <fieldset className="form-group">
                             <label>HIP *</label>
                             <select className="form-control"
-                                value={this.state.hipId}
-                                onChange={e => this.onChangeData('hip', e.target.value)} >
+                                value={this.state.hip?.hospitalName}
+                                onChange={e => this.onChangeData('hipId', e.target.value)} >
                                 {this.state.hospitals.map(hip =>
-                                    <option key={hip} value={hip}>{hip}</option>
+                                    <option key={hip.hospitalId} value={hip.hospitalId}>{hip.hospitalName}</option>
                                 )}
                             </select>
                         </fieldset>
@@ -187,15 +186,15 @@ export default class CreateConsentRequest extends Component {
                                     onChange={e => this.onChangeData('department', e.target.value)} />
                                 <ErrorMessage name="department" component="div" className="alert alert-danger text-danger" />
                             </fieldset>
-
+                                <div className='d-flex'>
                             <fieldset className="form-group">
-                                <label >Date : </label>
+                                <label >Date From: </label>
                                 <ReactDatePicker
                                     className="form-control"
                                     // showTimeSelect
                                     showTimeInput
-                                    selected={creationDate}
-                                    onChange={e => this.onChangeData('creationDate', e)}
+                                    selected={dateFrom}
+                                    onChange={e => this.onChangeData('dateFrom', e)}
                                     filterDate={isWeekday}          // disable weekend
                                     timeIntervals={15}              // time range around 15 min
                                     //showWeekNumbers               // show week number
@@ -203,6 +202,37 @@ export default class CreateConsentRequest extends Component {
                                     dateFormat="yyyy/MM/dd h:mm aa" // show all of time format
                                 />
                             </fieldset>
+                            <fieldset className="form-group">
+                                <label >Date To: </label>
+                                <ReactDatePicker
+                                    className="form-control"
+                                    // showTimeSelect
+                                    showTimeInput
+                                    selected={dateTo}
+                                    onChange={e => this.onChangeData('dateTo', e)}
+                                    filterDate={isWeekday}          // disable weekend
+                                    timeIntervals={15}              // time range around 15 min
+                                    //showWeekNumbers               // show week number
+                                    timeFormat="HH:mm"              // show time format
+                                    dateFormat="yyyy/MM/dd h:mm aa" // show all of time format
+                                />
+                            </fieldset>
+                            <fieldset className="form-group">
+                                <label >Valid Till: </label>
+                                <ReactDatePicker
+                                    className="form-control"
+                                    // showTimeSelect
+                                    showTimeInput
+                                    selected={valdityTill}
+                                    onChange={e => this.onChangeData('valdityTill', e)}
+                                    filterDate={isWeekday}          // disable weekend
+                                    timeIntervals={15}              // time range around 15 min
+                                    //showWeekNumbers               // show week number
+                                    timeFormat="HH:mm"              // show time format
+                                    dateFormat="yyyy/MM/dd h:mm aa" // show all of time format
+                                />
+                            </fieldset>
+                            </div>
                             <div className="modal-footer">
                                 <button 
                                     type="button" 

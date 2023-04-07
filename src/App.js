@@ -46,7 +46,7 @@ function App() {
                 <Route path="/doctors" component={ListDoctorComponent} />
 
                 <Route path="/request-consent" component={CreateConsentRequest} />
-                <Route path="/consent-request/:requestid" component={ViewConsentComponent} />
+                <Route path="/consent/:consentid" component={ViewConsentComponent} />
 
                 <Route path="/request-data" component={CreateDataRequest}  />
                 

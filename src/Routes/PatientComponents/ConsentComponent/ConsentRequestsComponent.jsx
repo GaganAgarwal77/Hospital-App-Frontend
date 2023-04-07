@@ -4,32 +4,35 @@ import * as alertify from 'alertifyjs';
 import "alertifyjs/build/css/alertify.css";
 import "alertifyjs/build/css/themes/default.css";
 import "@material/react-checkbox/dist/checkbox.css";
-import ProblemService from '../../../services/ProblemService';
 import AlertifyService from '../../../services/AlertifyService';
 import { withRouter } from 'react-router'; 
-import ProblemDetailModal from '../../BasicComponent/ProblemDetailModal';
 import DoctorService from '../../../services/DoctorService';
 
-let filterAllProblem = [];
-let filters = ["problemName", "problemStatus"];
+let filterAllConsent = [];
+let filters = ["consentName", "consentStatus"];
 class ConsentRequestsComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
             id: props.id,
-            problems: [],
-            problem:{}
+            consentObjects: [],
+            consentObject:{},
+
+            transactions: [],
+            transaction: {}
 
         }
-        this.getAllProblems = this.getAllProblems.bind(this);
+        this.getAllConsents = this.getAllConsents.bind(this);
+        this.getConsentTransacations = this.getConsentTransacations.bind(this);
     }
     componentDidMount() {
-        this.getAllProblems();
+        this.getAllConsents();
+        this.getConsentTransacations();
     }
-    getAllProblems() {
-        DoctorService.getConsentRequestByDoctorId(this.state.id).then(res => {
-            let problems = res.data.consent_objs;
-            this.setState({ problems: problems });
+    getAllConsents() {
+        DoctorService.getConsentObjectByDoctorId(this.state.id).then(res => {
+            let objs = res.data.consent_objs;
+            this.setState({ consentObjects: objs });
         }).catch((error) => {
             if (error.response) {
                 AlertifyService.alert(error.response.data.message);
@@ -39,20 +42,33 @@ class ConsentRequestsComponent extends Component {
             else console.log(error.message);
         });
     }
-    onChangeSearchByStatusOrDate = (e) => { this.filterProblems(e.target.value); }
-    filterProblems(value) {
+    getConsentTransacations() { 
+        DoctorService.getConsentTransactionByDoctorId(this.state.id).then(res => {
+            let txns = res.data.consentTxns;
+            this.setState({ transactions: txns });
+        }).catch((error) => {
+            if (error.response) {
+                AlertifyService.alert(error.response.data.message);
+                this.props.history.push('/patients');
+            }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);
+        });
+    }
+    onChangeSearchByStatusOrDate = (e) => { this.filterConsents(e.target.value); }
+    filterConsents(value) {
         var results = [];
         if (value !== '') {
-            results = filterAllProblem.filter(problem => {
+            results = filterAllConsent.filter(consentObject => {
                 let find = false;
                 //filters.forEach(filter=>{
                 filters.forEach(function (filter) {
-                    let control = problem[filter].toLowerCase().indexOf(value.toLowerCase());
+                    let control = consentObject[filter].toLowerCase().indexOf(value.toLowerCase());
                     if (control > -1) find = true;
                 });
                 return find;
             });
-            this.setState({ problems: results });
+            this.setState({ consentObjects: results });
         }
         else { this.loadPatient(); }
     }
@@ -60,27 +76,25 @@ class ConsentRequestsComponent extends Component {
         if (data.length < 31) return data;
         else return data.substr(0, 30) + "...";
     }
-    deleteProblem(problemid) {
-        alertify.confirm("Are you sure to delete the problem.",
+    deleteConsent(consentid) {
+        alertify.confirm("Are you sure to delete the consentObject.",
             ok => {
-                ProblemService.delete(problemid).then(res => {
-                    //this.setState({ problems: this.state.problems.filter(p => p.problemid !== problemid) });
+                    //this.setState({ consentObjects: this.state.consentObjects.filter(p => p.consentid !== consentid) });
                     AlertifyService.successMessage('Deleting is ok : ');
-                    this.getAllProblems();
-                });
+                    this.getAllConsents();
             },
             cancel => { AlertifyService.errorMessage('Cancel'); }
         ).set({ title: "Attention" }).set({ transition: 'slide' }).show();
     }
-    viewProblem(problemid) {
-        window.localStorage.setItem("problemid", problemid);
-        this.props.history.push('/problem/' + problemid);
+    viewConsent(consentid) {
+        window.localStorage.setItem("consentID", consentid);
+        this.props.history.push('/consent/' + consentid);
     }
-    viewQuickly(problem){
-        this.setState({problem:problem});
+    viewQuickly(consentObject){
+        this.setState({consentObject:consentObject});
     }
     render() {
-        let problems = this.state.problems;
+        let consentObjects = this.state.consentObjects;
         return (
             <div className="row">
             <div className="col-lg-12">
@@ -89,7 +103,7 @@ class ConsentRequestsComponent extends Component {
                 <hr />
                 <div className="form-group">
                     <input type="text"
-                        placeholder="Search Problem by problem Name or problem Status"
+                        placeholder="Search Consent by consentObject Name or consentObject Status"
                         name="searchByName"
                         className="form-control"
                         onChange={this.onChangeSearchByStatusOrDate}
@@ -100,25 +114,38 @@ class ConsentRequestsComponent extends Component {
                     <table className="table table-bordered table-sm table-dark table-hover">
                         <thead>
                             <tr>
-                                <th>Request Name </th>
-                                <th>Request Detail</th>
-                                <th>Request Status</th>
-                                <th>Create Date</th>
+                                <th>Patient ID</th>
+                                <th>HIP ID</th>
+                                <th>Date From</th>
+                                <th>Date To</th>
+                                <th>Valid Till</th>
+                                <th>Consent Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {problems.map(problem =>
+                            {consentObjects.map( (consentObject, index) =>
 
-                                <tr className="bg-default" key={problem.problemid}>
-                                    <td>{problem.problemName}</td>
-                                    <td>{this.limitingPatientDetail(problem.problemDetail)}</td>
-
-                                    <td>{problem.problemStatus}</td>
+                                <tr className="bg-default" key={consentObject.consent_object_id}>
+                                    <td>{consentObject.patient_ehrb_id}</td>
+                                    <td>{consentObject.hip_id}</td>
                                     <td>
                                         <Moment format="YYYY/MM/DD HH:mm">
-                                            {problem.creationDate}
+                                            {consentObject.date_from}
                                         </Moment>
+                                    </td>
+                                    <td>
+                                        <Moment format="YYYY/MM/DD HH:mm">
+                                            {consentObject.date_to}
+                                        </Moment>
+                                    </td>
+                                    <td>
+                                        <Moment format="YYYY/MM/DD HH:mm">
+                                            {consentObject.validity}
+                                        </Moment>
+                                    </td>
+                                    <td>
+                                        {this.state.transactions[index].consent_status}
                                     </td>
                                     <td>
                                         <div className="btn-group" role="group">
@@ -132,18 +159,18 @@ class ConsentRequestsComponent extends Component {
                                             <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                 <button
                                                     className="dropdown-item"
-                                                    onClick={() => this.viewProblem(problem.problemid)} >
+                                                    onClick={() => this.viewConsent(consentObject.consent_object_id)} >
                                                     View </button>
                                                 <div className="dropdown-divider"></div>
                                                 <button
                                                     className="dropdown-item"
-                                                    data-toggle="modal" data-target="#problemModal"
-                                                    onClick={() => this.viewQuickly(problem)} >
+                                                    data-toggle="modal" data-target="#consentModal"
+                                                    onClick={() => this.viewQuickly(consentObject)} >
                                                     View Quickly </button>
                                                 <div className="dropdown-divider"></div>
                                                 <button
                                                     className="dropdown-item"
-                                                    onClick={() => this.deleteProblem(problem.problemid)} >
+                                                    onClick={() => this.deleteConsent(consentObject.consent_object_id)} >
                                                     Delete </button>
                                             </div>
                                         </div>
@@ -152,7 +179,6 @@ class ConsentRequestsComponent extends Component {
                             )}
                         </tbody>
                     </table>
-                    <ProblemDetailModal problem={this.state.problem} />
                     <hr />
                     <hr />
                     <hr />
