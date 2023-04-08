@@ -25,6 +25,13 @@ class ApiService {
         return axios.post(API_BASE_URL + url, data);
     }
 
+    postAuth(url, data, token) {
+        return axios.post(API_BASE_URL + url, data, 
+            { headers: {
+                Authorization: 'Bearer ' + token}
+            });
+    }
+
     put(url, data) {
         return axios.put(API_BASE_URL + url, data);
     }

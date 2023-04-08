@@ -45,8 +45,8 @@ class DoctorService {
         return ApiService.post('/auth/login/doctor', doctor);
     }
     
-    generateConsentRequest(consentRequest) {
-        return ApiService.post('/consent/generate', consentRequest);
+    generateConsentRequest(consentRequest, token) {
+        return ApiService.postAuth('/consent/generate', consentRequest, token);
     }
 
     editDoctor(doctor) {

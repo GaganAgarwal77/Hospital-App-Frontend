@@ -101,7 +101,7 @@ export default class CreateConsentRequest extends Component {
                     }
                 }
                 console.log(this.state.doctor, consentRequest);
-                DoctorService.generateConsentRequest(consentRequest).then(res => {
+                DoctorService.generateConsentRequest(consentRequest, token).then(res => {
                     AlertifyService.successMessage("Generating consent request for related patient is ok.. ");
                     this.viewPatient(this.state.patientid);
                 });
