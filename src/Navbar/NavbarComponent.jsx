@@ -13,7 +13,7 @@ export default class NavbarComponent extends Component {
                         <ul className="navbar-nav">
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Patients
+                                Patient
                                 </a>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <a className="dropdown-item"  href="/patients">Patients</a>
@@ -22,11 +22,12 @@ export default class NavbarComponent extends Component {
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                doctors
+                                Doctor
                                 </a>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a className="dropdown-item"  href="/doctors">doctors</a>
+                                    <a className="dropdown-item"  href="/doctors">Doctors</a>
                                     <a className="dropdown-item"  href="/add-doctor">Add Doctor</a>
+                                    <a className="dropdown-item"  href="/login-doctor">Login Doctor</a>
                                 </div>
                             </li>
 

@@ -18,7 +18,8 @@ class AddDoctorComponent extends Component {
             bornDate: new Date(),
             status: 1,
             cities: [],
-            ehrbID: ''
+            ehrbID: '',
+            password: ''
         }
         // this.saveUser = this.saveUser.bind(this);
     }
@@ -34,7 +35,7 @@ class AddDoctorComponent extends Component {
                 firstName : this.state.name,
                 lastName : this.state.lastname,
                 emailAdress : this.state.email,
-                password : "password",
+                password : this.state.password,
                 phoneString : this.state.phoneNo,
                 gender : this.state.gender,
                 address : this.state.city,
@@ -73,7 +74,7 @@ class AddDoctorComponent extends Component {
             const day = date.getDay(date);
             return day !== 0 && day !== 6;
         };
-        let { ehrbID, name, lastname,phoneNo, email, bornDate, gender, city } = this.state;
+        let { ehrbID, name, lastname,phoneNo, email, password, bornDate, gender, city } = this.state;
         return (
             <div className="row">
                 <div className="col-sm-12">
@@ -104,6 +105,10 @@ class AddDoctorComponent extends Component {
                         <div className="form-group">
                             <label>Email:</label>
                             <input placeholder="Email" name="email" className="form-control" value={email} onChange={e => this.onChangeData('email', e.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label>Password:</label>
+                            <input placeholder="Password" name="password" className="form-control"  type="password" value={password} onChange={e => this.onChangeData('password', e.target.value)} />
                         </div>
                         <div className="form-group">
                             <label>Born Date *</label>

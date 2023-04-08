@@ -19,6 +19,7 @@ import ProblemFormComponent from './Routes/PatientComponents/ProblemComponent/Pr
 import CreateConsentRequest from './Routes/PatientComponents/CreateConsentRequest';
 import ViewConsentComponent from './Routes/PatientComponents/ConsentComponent/ViewConsentComponent';
 import CreateDataRequest from './Routes/PatientComponents/CreateDataRequest';
+import LoginDoctorComponent from './Routes/DoctorComponents/LoginDoctorComponent';
 // https://www.youtube.com/watch?v=DQ93TxqKkWo
 function App() {
   return (            
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/edit-patient" component={EditPatientComponent} />
 
                 <Route path="/add-doctor" component={AddDoctorComponent} />
+                <Route path="/login-doctor" component={LoginDoctorComponent} />
                 <Route path="/edit-doctor" component={EditDoctorComponent} />
                 <Route path="/view-doctor/:id" component={ViewDoctorComponent} />
                 <Route path="/doctors" component={ListDoctorComponent} />
