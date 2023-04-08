@@ -29,6 +29,7 @@ class LoginDoctorComponent extends Component {
                 .then(res => {
                     console.log(res);
                     window.localStorage.setItem("token", res.data.token);
+                    window.localStorage.setItem("doctorID", res.data.doctorID);
                     this.setState({ message: res.data.message });
                     this.props.history.push('/patients');
                     alertify.success("Adding doctor is ok");

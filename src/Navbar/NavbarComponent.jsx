@@ -17,9 +17,10 @@ export default class NavbarComponent extends Component {
                                 </a>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <a className="dropdown-item"  href="/patients">Patients</a>
-                                    <a className="dropdown-item"  href="/add-patient">Add Patient</a>
+                                    {window.localStorage.getItem("token") == null &&  <a className="dropdown-item"  href="/add-patient">Add Patient</a>}
                                 </div>
                             </li>
+                            {window.localStorage.getItem("token") == null && 
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Doctor
@@ -30,6 +31,12 @@ export default class NavbarComponent extends Component {
                                     <a className="dropdown-item"  href="/login-doctor">Login Doctor</a>
                                 </div>
                             </li>
+                            }                   
+                        {window.localStorage.getItem("token") != null &&
+                            <a className="nav-link" href={"/view-doctor/"+window.localStorage.getItem("doctorID")}>View Profile</a>
+                        }
+                                                    {window.localStorage.getItem("token") != null &&
+                            <a className="nav-link" type="submit" onClick={() => {window.localStorage.removeItem("token");window.location.reload()}}>Logout</a>}
 
                         </ul>
                     </div>

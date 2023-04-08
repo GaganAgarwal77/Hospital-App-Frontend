@@ -22,7 +22,7 @@ export default class CreateConsentRequest extends Component {
             patient: null,
 
             doctors: [],
-            doctorid: '',
+            doctorid: window.localStorage.getItem("doctorID"),
             doctor: null,
 
             hospitals: [],
@@ -84,6 +84,7 @@ export default class CreateConsentRequest extends Component {
             if (this.state.id != null) {
                 // in doctors list find doctor with doctorid
                 let doctor = this.state.doctors.find(doctor => doctor.id === this.state.doctorid);
+                let token = window.localStorage.getItem("token"); // @Ishaan, this is the token, i dont know how to send this with generate consent request
                 let consentRequest = {
                     ehrbID: this.state.patient.ehrbID,
                     doctorID: doctor.doctorEhrbID,
@@ -136,7 +137,7 @@ export default class CreateConsentRequest extends Component {
                         initialValues={{ hiType, department, creationDate }}
                         enableReinitialize={true} >
                         <Form>
-                        <fieldset className="form-group">
+                        {/* <fieldset className="form-group">
                             <label>Doctor *</label>
                             <select className="form-control"
                                 value={this.state.doctor?.firstName}
@@ -145,7 +146,7 @@ export default class CreateConsentRequest extends Component {
                                     <option key={doctor.id} value={doctor.id}>{doctor.firstName}</option>
                                 )}
                             </select>
-                        </fieldset>
+                        </fieldset> */}
                         <fieldset className="form-group">
                             <label>HIU *</label>
                             <select className="form-control"

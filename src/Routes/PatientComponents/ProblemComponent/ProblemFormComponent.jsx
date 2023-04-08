@@ -17,7 +17,7 @@ export default class ProblemFormComponent extends Component {
         super(props)
         this.state = {
             patientid: window.localStorage.getItem("patientID"),
-            doctorid: '',
+            doctorid: window.localStorage.getItem("doctorID"),
 
             doctors: [],
             doctor: null,
@@ -89,7 +89,7 @@ export default class ProblemFormComponent extends Component {
             if (this.state.patientid != null) { 
                 let record = {
                     patientID: this.state.patientid,
-                    doctorID: this.state.doctorid,
+                    doctorID: window.localStorage.getItem("doctorID"),
                     department: this.state.department,
                     hiType: this.state.hiType,
                     metaData: {
@@ -141,7 +141,7 @@ export default class ProblemFormComponent extends Component {
                         initialValues={{ department, hiType, height, weight, bp, heartRate, problems, diagnosis, prescription, creationDate }}
                         enableReinitialize={true} >
                         <Form>
-                        <fieldset className="form-group">
+                        {/* <fieldset className="form-group">
                             <label>Doctor *</label>
                             <select className="form-control"
                                 value={this.state.doctor?.firstName}
@@ -150,7 +150,7 @@ export default class ProblemFormComponent extends Component {
                                     <option key={doctor.id} value={doctor.id}>{doctor.firstName}</option>
                                 )}
                             </select>
-                        </fieldset>
+                        </fieldset> */}
                         <fieldset className="form-group">
                                 <label>Department :</label>
                                 <Field
