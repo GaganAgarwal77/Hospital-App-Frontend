@@ -40,6 +40,7 @@ export default class CreateConsentRequest extends Component {
         }
         this.getAllDoctors()
         this.getPatient()
+        this.getAllHospitals()
     }
     componentDidMount() {
     }
@@ -55,7 +56,7 @@ export default class CreateConsentRequest extends Component {
     }
     getAllHospitals() {
         DoctorService.getHospitals().then(res => {
-            this.setState({ hospitals: res.data });
+            this.setState({ hospitals: res.data.hospitals });
         });
     }
 
