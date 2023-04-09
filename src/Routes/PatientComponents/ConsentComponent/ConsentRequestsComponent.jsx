@@ -33,27 +33,13 @@ class ConsentRequestsComponent extends Component {
         DoctorService.getConsentObjectByDoctorId(this.state.id).then(res => {
             let objs = res.data.consent_objs;
             this.setState({ consentObjects: objs });
-        }).catch((error) => {
-            if (error.response) {
-                AlertifyService.alert(error.response.data.message);
-                this.props.history.push('/patients');
-            }
-            else if (error.request) console.log(error.request);
-            else console.log(error.message);
-        });
+        })
     }
     getConsentTransactions() { 
         DoctorService.getConsentTransactionByDoctorId(this.state.id).then(res => {
             let txns = res.data.consentTxns;
             this.setState({ transactions: txns });
-        }).catch((error) => {
-            if (error.response) {
-                AlertifyService.alert(error.response.data.message);
-                this.props.history.push('/patients');
-            }
-            else if (error.request) console.log(error.request);
-            else console.log(error.message);
-        });
+        })
     }
     onChangeSearchByStatusOrDate = (e) => { this.filterConsents(e.target.value); }
     filterConsents(value) {
@@ -95,6 +81,7 @@ class ConsentRequestsComponent extends Component {
     }
     render() {
         let consentObjects = this.state.consentObjects;
+        let transactions = this.state.transactions;
         return (
             <div className="row">
             <div className="col-lg-12">
@@ -145,7 +132,7 @@ class ConsentRequestsComponent extends Component {
                                         </Moment>
                                     </td>
                                     <td>
-                                        {this.state.transactions[index].consent_status}
+                                        {transactions[index].consent_status}
                                     </td>
                                     <td>
                                         <div className="btn-group" role="group">
