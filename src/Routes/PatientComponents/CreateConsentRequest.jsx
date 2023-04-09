@@ -89,8 +89,8 @@ export default class CreateConsentRequest extends Component {
                 let consentRequest = {
                     ehrbID: this.state.patient.ehrbID,
                     doctorID: doctor.doctorEhrbID,
-                    hiuID: this.state.hiu?.hospitalId,
-                    hipID: this.state.hip?.hospitalId,
+                    hiuID: this.state.hiuId,
+                    hipID: this.state.hipId,
                     departments: [this.state.department],
                     hiType: [this.state.hiType],
                     permission: {
