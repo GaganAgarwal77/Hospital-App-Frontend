@@ -16,11 +16,7 @@ class ConsentRequestsComponent extends Component {
         this.state = {
             id: props.id,
             consentObjects: [],
-            consentObject:{},
-
             transactions: [],
-            transaction: {}
-
         }
         this.getAllConsents();
         this.getConsentTransactions();
@@ -31,14 +27,12 @@ class ConsentRequestsComponent extends Component {
     }
     getAllConsents() {
         DoctorService.getConsentObjectByDoctorId(this.state.id).then(res => {
-            let objs = res.data.consent_objs;
-            this.setState({ consentObjects: objs });
+            this.setState({ consentObjects: res.data.consent_objs });
         })
     }
     getConsentTransactions() { 
         DoctorService.getConsentTransactionByDoctorId(this.state.id).then(res => {
-            let txns = res.data.consentTxns;
-            this.setState({ transactions: txns });
+            this.setState({ transactions: res.data.consentTxns });
         })
     }
     onChangeSearchByStatusOrDate = (e) => { this.filterConsents(e.target.value); }
@@ -80,8 +74,7 @@ class ConsentRequestsComponent extends Component {
         this.setState({consentObject:consentObject});
     }
     render() {
-        let consentObjects = this.state.consentObjects;
-        let transactions = this.state.transactions;
+        let {consentObjects, transactions} = this.state;
         return (
             <div className="row">
             <div className="col-lg-12">
@@ -111,7 +104,7 @@ class ConsentRequestsComponent extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {consentObjects.map( (consentObject, index) =>
+                            {consentObjects.map((consentObject, index) =>
 
                                 <tr className="bg-default" key={consentObject.consent_object_id}>
                                     <td>{consentObject.patient_ehrb_id}</td>
