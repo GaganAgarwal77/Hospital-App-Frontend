@@ -20,8 +20,9 @@ class ConsentRequestsComponent extends Component {
         }
     }
     componentDidMount() {
-        this.getAllConsents();
-        this.getConsentTransactions();
+        // this.getAllConsents();
+        // this.getConsentTransactions();
+        this.getConsents();
     }
     getAllConsents() {
         DoctorService.getConsentObjectByDoctorId(this.state.id).then(res => {
@@ -31,6 +32,15 @@ class ConsentRequestsComponent extends Component {
     getConsentTransactions() { 
         DoctorService.getConsentTransactionByDoctorId(this.state.id).then(res => {
             this.setState({ transactions: res.data.consentTxns });
+        })
+    }
+    getConsents() {
+        DoctorService.getConsentTransactionByDoctorId(this.state.id).then(res => {
+            let txns = res.data.consentTxns;
+            DoctorService.getConsentObjectByDoctorId(this.state.id).then(res => {
+                let consents = res.data.consent_objs;
+                this.setState({ consentObjects: consents, transactions: txns });
+            })
         })
     }
     onChangeSearchByStatusOrDate = (e) => { this.filterConsents(e.target.value); }
