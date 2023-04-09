@@ -34,7 +34,7 @@ class AddDoctorComponent extends Component {
             let doctor = {
                 firstName : this.state.name,
                 lastName : this.state.lastname,
-                emailAdress : this.state.email,
+                emailAddress : this.state.email,
                 password : this.state.password,
                 phoneString : this.state.phoneNo,
                 gender : this.state.gender,
@@ -42,8 +42,10 @@ class AddDoctorComponent extends Component {
                 Department : "department",
                 ehrbID : this.state.ehrbID,
             }
+            console.log(doctor)
             DoctorService.addDoctor(doctor)
                 .then(res => {
+                    console.log(res);
                     this.setState({ message: 'User added successfully.' });
                     this.props.history.push('/doctors');
                     alertify.success("Adding doctor is ok");
@@ -63,6 +65,7 @@ class AddDoctorComponent extends Component {
     onChangeData(type, data) {
         const stateData = this.state;
         stateData[type] = data;
+        console.log(type, data)
         this.setState({ stateData });
     }
     back() {

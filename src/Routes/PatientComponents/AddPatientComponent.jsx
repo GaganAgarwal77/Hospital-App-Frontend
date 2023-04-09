@@ -32,7 +32,7 @@ class AddPatientComponent extends Component {
             let patient = {
                 firstName : this.state.name,
                 lastName : this.state.lastname,
-                emailAdress : this.state.email,
+                emailAddress : this.state.email,
                 phoneString : this.state.phoneNo,
                 gender : this.state.gender,
                 address : this.state.city,
