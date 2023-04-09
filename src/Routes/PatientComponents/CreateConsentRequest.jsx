@@ -95,10 +95,10 @@ export default class CreateConsentRequest extends Component {
                     hiType: [this.state.hiType],
                     permission: {
                         dateRange : {
-                            from: this.state.dateFrom,
-                            to: this.state.dateTo
+                            from: this.state.dateFrom.toString(),
+                            to: this.state.dateTo.toString()
                         },
-                        consent_validity: this.state.valdityTill
+                        consent_validity: this.state.valdityTill.toString()
                     }
                 }
                 console.log(this.state.doctor, consentRequest);

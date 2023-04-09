@@ -22,12 +22,12 @@ class ConsentRequestsComponent extends Component {
             transaction: {}
 
         }
-        this.getAllConsents = this.getAllConsents.bind(this);
-        this.getConsentTransacations = this.getConsentTransacations.bind(this);
+        this.getAllConsents();
+        this.getConsentTransactions();
     }
     componentDidMount() {
-        this.getAllConsents();
-        this.getConsentTransacations();
+        // this.getAllConsents();
+        // this.getConsentTransactions();
     }
     getAllConsents() {
         DoctorService.getConsentObjectByDoctorId(this.state.id).then(res => {
@@ -42,7 +42,7 @@ class ConsentRequestsComponent extends Component {
             else console.log(error.message);
         });
     }
-    getConsentTransacations() { 
+    getConsentTransactions() { 
         DoctorService.getConsentTransactionByDoctorId(this.state.id).then(res => {
             let txns = res.data.consentTxns;
             this.setState({ transactions: txns });
