@@ -18,12 +18,10 @@ class ConsentRequestsComponent extends Component {
             consentObjects: [],
             transactions: [],
         }
-        this.getAllConsents();
-        this.getConsentTransactions();
     }
     componentDidMount() {
-        // this.getAllConsents();
-        // this.getConsentTransactions();
+        this.getAllConsents();
+        this.getConsentTransactions();
     }
     getAllConsents() {
         DoctorService.getConsentObjectByDoctorId(this.state.id).then(res => {
