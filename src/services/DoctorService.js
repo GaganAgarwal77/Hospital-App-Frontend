@@ -26,11 +26,11 @@ class DoctorService {
     }
 
     getConsentObjectByConsentID(id) {
-        return ApiService.getAll('/consent/consent-object?consentID='+id);
+        return ApiService.getAll('/consent/consent-object?consentObjectID='+id);
     }
 
     getConsentTransacationByConsentID(id) {
-        return ApiService.getAll('/consent/consent-transaction?consentID='+id);
+        return ApiService.getAll('/consent/consent-transaction?consentObjectID='+id);
     }
 
     deleteDoctor(Id) {

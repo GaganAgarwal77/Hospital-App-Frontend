@@ -67,14 +67,6 @@ class DoctorDetail extends Component {
                         <li className="list-group-item"><b>Name : </b>{this.props.name}</li>
                         <li className="list-group-item"><b>Last Name : </b>{this.props.lastname}</li>
                         <li className="list-group-item"><b>Phone No : </b>{this.props.phoneNo}</li>
-                        <li className="list-group-item"><b>Age : </b>
-                            {age !== null ? age : null}
-                        </li>
-                        <li className="list-group-item"><b>Born Date : </b>
-                            {this.props.bornDate !== null ?
-                                <Moment format="YYYY / MM / DD  HH:mm"> {this.props.bornDate} </Moment> : null
-                            }
-                        </li>
                         <li className="list-group-item"><b>Email : </b>{this.props.email}</li>
                         <li className="list-group-item"><b>City : </b>{this.props.city}</li>
                         <li className="list-group-item"><b>Gender : </b>{this.props.gender}</li>
