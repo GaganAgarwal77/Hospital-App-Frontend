@@ -79,13 +79,13 @@ export default class CreateConsentRequest extends Component {
         return errors;
     }
     addProblem = () => {
-        // if (this.state.doctorid === '' || this.state.hiuId === '' || this.state.hipId === '' || this.state.hiType === '' || this.state.department === '') {
-        //     AlertifyService.alert("Fill in the blanks");
-        // } else {
+        if (this.state.doctorid === '' || this.state.hiuId === '' || this.state.hipId === '' || this.state.hiType === '' || this.state.department === '') {
+            AlertifyService.alert("Fill in the blanks");
+        } else {
             if (this.state.id != null) {
                 // in doctors list find doctor with doctorid
                 let doctor = this.state.doctors.find(doctor => doctor.id === this.state.doctorid);
-                let token = window.localStorage.getItem("token"); // @Ishaan, this is the token, i dont know how to send this with generate consent request
+                let token = window.localStorage.getItem("token");
                 let consentRequest = {
                     ehrbID: this.state.patient.ehrbID,
                     doctorID: doctor.doctorEhrbID,
@@ -95,10 +95,10 @@ export default class CreateConsentRequest extends Component {
                     hiType: [this.state.hiType],
                     permission: {
                         dateRange : {
-                            from: this.state.dateFrom.toString(),
-                            to: this.state.dateTo.toString()
+                            from: this.state.dateFrom.toISOString().split('T')[0],
+                            to: this.state.dateTo.toISOString().split('T')[0]
                         },
-                        consent_validity: this.state.valdityTill.toString()
+                        consent_validity: this.state.valdityTill.toISOString().split('T')[0]
                     }
                 }
                 console.log(this.state.doctor, consentRequest);
@@ -109,7 +109,7 @@ export default class CreateConsentRequest extends Component {
             } else {
                 AlertifyService.alert("Error..");
             }
-        // }
+        }
     }
     onChangeData(type, e) {
         const addproblem = this.state;
