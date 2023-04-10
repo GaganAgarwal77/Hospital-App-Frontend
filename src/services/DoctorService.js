@@ -22,7 +22,7 @@ class DoctorService {
     }
 
     getConsentTransactionByDoctorId(id) {
-        return ApiService.getAll('/consent/consent-transaction?doctorID='+id);
+        return ApiService.getAll('/consent/consent-transaction-by-doctor?doctorID='+id);
     }
 
     getConsentObjectByConsentID(id) {
