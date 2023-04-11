@@ -39,6 +39,8 @@ class ConsentRequestsComponent extends Component {
             let txns = res.data.consentTxns;
             DoctorService.getConsentObjectByDoctorId(this.state.id).then(res => {
                 let consents = res.data.consent_objs;
+                console.log(consents)
+                console.log(txns)
                 this.setState({ consentObjects: consents, transactions: txns });
             })
         })
@@ -112,8 +114,8 @@ class ConsentRequestsComponent extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {consentObjects.map((consentObject, index) =>
-
+                            {console.log(this.state)}
+                            {this.state.consentObjects.map((consentObject, index) =>
                                 <tr className="bg-default" key={consentObject.consent_object_id}>
                                     <td>{consentObject.patient_ehrb_id}</td>
                                     <td>{consentObject.hip_id}</td>

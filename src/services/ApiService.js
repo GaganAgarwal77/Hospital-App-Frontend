@@ -32,6 +32,13 @@ class ApiService {
             });
     }
 
+    getAuth(url, token) {
+        return axios.get(API_BASE_URL + url, 
+            { headers: {
+                Authorization: 'Bearer ' + token}
+            });
+    }
+
     put(url, data) {
         return axios.put(API_BASE_URL + url, data);
     }

@@ -22,7 +22,7 @@ class ProblemDetail extends Component {
             <div>
                 <div className="card" >
 
-                    <div className="card-header"><h3> Problem Detail</h3> </div>
+                    <div className="card-header"><h3> Consent Detail</h3> </div>
                     <ul className="text-left list-group list-group-flush">
                         <li className="list-group-item"><b>Consent ID : </b>{this.props.id}</li>
                         <li className="list-group-item"><b>Patient ABHA ID : </b>{this.props.ehrbID}</li>
