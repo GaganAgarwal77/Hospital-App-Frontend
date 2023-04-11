@@ -33,6 +33,14 @@ class DoctorService {
         return ApiService.getAuth('/consent/consent-transaction?consentID='+id, token);
     }
 
+    getConsentObjectsHIP(token) {
+        return ApiService.getAuth('/consent/fetch-consents-hip', token);
+    }
+    
+    getDataRequestsHIP(token) {
+        return ApiService.getAuth('/consent/fetch-data-requests-hip', token);
+    }
+    
     deleteDoctor(Id) {
         return ApiService.deleteById(DOCTOR_API_BASE_URL + '/' + Id);
     }

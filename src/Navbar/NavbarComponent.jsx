@@ -32,12 +32,13 @@ export default class NavbarComponent extends Component {
                                 </div>
                             </li>
                             }                   
+                        <a className="nav-link" href="/recieved-consent-requests">Recieved Consent Requests</a>
+                        <a className="nav-link" href="/recieved-data-requests">Recieved Data Requests</a>
                         {window.localStorage.getItem("token") != null &&
-                            <a className="nav-link" href={"/view-doctor/"+window.localStorage.getItem("doctorID")}>View Profile</a>
+                            <a className="nav-link" href={"/view-doctor/"+window.localStorage.getItem("doctorID")}>Doctor Profile</a>
                         }
                                                     {window.localStorage.getItem("token") != null &&
                             <a className="nav-link" type="submit" onClick={() => {window.localStorage.removeItem("token");window.location.reload()}}>Logout</a>}
-
                         </ul>
                     </div>
                 </nav>

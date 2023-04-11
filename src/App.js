@@ -20,6 +20,8 @@ import CreateConsentRequest from './Routes/PatientComponents/CreateConsentReques
 import ViewConsentComponent from './Routes/PatientComponents/ConsentComponent/ViewConsentComponent';
 import CreateDataRequest from './Routes/PatientComponents/CreateDataRequest';
 import LoginDoctorComponent from './Routes/DoctorComponents/LoginDoctorComponent';
+import ConsentRequestsComponentHIP from './Routes/PatientComponents/ConsentComponent/ConsentRequestsComponentHIP';
+import DataRequestsComponentHIP from './Routes/PatientComponents/DataRequestsComponentHIP';
 // https://www.youtube.com/watch?v=DQ93TxqKkWo
 function App() {
   return (            
@@ -49,6 +51,8 @@ function App() {
 
                 <Route path="/request-consent" component={CreateConsentRequest} />
                 <Route path="/consent/:consentid" component={ViewConsentComponent} />
+                <Route path="/recieved-consent-requests" component={ConsentRequestsComponentHIP} /> 
+                <Route path="/recieved-data-requests" component={DataRequestsComponentHIP} /> 
 
                 <Route path="/request-data" component={CreateDataRequest}  />
                 
