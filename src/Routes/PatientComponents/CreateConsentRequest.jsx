@@ -79,13 +79,14 @@ export default class CreateConsentRequest extends Component {
         return errors;
     }
     addProblem = () => {
-        if (this.state.doctorid === '' || this.state.hiuId === '' || this.state.hipId === '' || this.state.hiType === '' || this.state.department === '') {
-            AlertifyService.alert("Fill in the blanks");
-        } else {
+        // if (this.state.doctorid === '' || this.state.hiuId === '' || this.state.hipId === '' || this.state.hiType === '' || this.state.department === '') {
+        //     AlertifyService.alert("Fill in the blanks");
+        // } else {
             if (this.state.id != null) {
                 // in doctors list find doctor with doctorid
                 let doctor = this.state.doctors.find(doctor => doctor.id === this.state.doctorid);
                 let token = window.localStorage.getItem("token");
+                console.log(token);
                 let consentRequest = {
                     ehrbID: this.state.patient.ehrbID,
                     doctorID: doctor.doctorEhrbID,
@@ -95,21 +96,26 @@ export default class CreateConsentRequest extends Component {
                     hiType: [this.state.hiType],
                     permission: {
                         dateRange : {
-                            from: this.state.dateFrom.toISOString().split('T')[0],
-                            to: this.state.dateTo.toISOString().split('T')[0]
+                            from: this.state.dateFrom,
+                            to: this.state.dateTo
                         },
-                        consent_validity: this.state.valdityTill.toISOString().split('T')[0]
+                        consent_validity: this.state.valdityTill
                     }
                 }
+                let consentObj = {
+                    consent_object : consentRequest
+                }
                 console.log(this.state.doctor, consentRequest);
-                DoctorService.generateConsentRequest(consentRequest, token).then(res => {
+                console.log(this.state);
+                DoctorService.generateConsentRequest(consentObj, token).then(res => {
+                    console.log(consentObj)
                     AlertifyService.successMessage("Generating consent request for related patient is ok.. ");
                     this.viewPatient(this.state.patientid);
                 });
             } else {
                 AlertifyService.alert("Error..");
             }
-        }
+        // }
     }
     onChangeData(type, e) {
         const addproblem = this.state;

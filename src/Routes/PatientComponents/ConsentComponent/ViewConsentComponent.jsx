@@ -51,7 +51,7 @@ export default class ViewConsentComponent extends Component {
         });
     } 
     loadConsentObject() {
-        DoctorService.getConsentObjectByConsentID(this.state.consentid).then(res => {
+        DoctorService.getConsentObjectByConsentID(this.state.consentid, window.localStorage.getItem("token")).then(res => {
             this.setState({ consentObject: res.data });
         }).catch((error) => {
             if (error.response) {
@@ -63,7 +63,7 @@ export default class ViewConsentComponent extends Component {
         });
     }
     loadConsentTransaction() { 
-        DoctorService.getConsentTransacationByConsentID(this.state.consentid).then(res => {
+        DoctorService.getConsentTransacationByConsentID(this.state.consentid, window.localStorage.getItem("token")).then(res => {
             this.setState({ transaction: res.data });
         }).catch((error) => {
             if (error.response) {
@@ -97,7 +97,7 @@ export default class ViewConsentComponent extends Component {
             },
             request_message: "message"
         }
-        DoctorService.createDataRequest(data).then(res => {
+        DoctorService.createDataRequest(data, window.localStorage.getItem("token")).then(res => {
             AlertifyService.alert("Data Request Created Successfully");
             this.props.history.push('/patients');
         }).catch((error) => {

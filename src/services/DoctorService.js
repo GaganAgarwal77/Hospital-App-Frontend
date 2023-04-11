@@ -25,12 +25,12 @@ class DoctorService {
         return ApiService.getAll('/consent/consent-transaction-by-doctor?doctorID='+id);
     }
 
-    getConsentObjectByConsentID(id) {
-        return ApiService.getAll('/consent/consent-object?consentID='+id);
+    getConsentObjectByConsentID(id, token) {
+        return ApiService.getAuth('/consent/consent-object?consentID='+id, token);
     }
 
-    getConsentTransacationByConsentID(id) {
-        return ApiService.getAll('/consent/consent-transaction?consentID='+id);
+    getConsentTransacationByConsentID(id, token) {
+        return ApiService.getAuth('/consent/consent-transaction?consentID='+id, token);
     }
 
     deleteDoctor(Id) {
@@ -49,6 +49,9 @@ class DoctorService {
         return ApiService.postAuth('/consent/generate', consentRequest, token);
     }
 
+    createDataRequest(data, token){
+        return ApiService.postAuth('/data/request-data-hiu', data, token)
+    }
     editDoctor(doctor) {
         return ApiService.put(DOCTOR_API_BASE_URL + '/' + doctor.id, doctor);
     }
