@@ -31,9 +31,25 @@ export default class NavbarComponent extends Component {
                                     <a className="dropdown-item"  href="/login-doctor">Login Doctor</a>
                                 </div>
                             </li>
-                            }                   
-                        <a className="nav-link" href="/recieved-consent-requests">Recieved Consent Requests</a>
-                        <a className="nav-link" href="/recieved-data-requests">Recieved Data Requests</a>
+                            }    
+                        <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Consent Requests
+                                </a>
+                                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a className="dropdown-item"  href="/sent-consent-requests">Sent</a>
+                                    <a className="dropdown-item"  href="/recieved-consent-requests">Recieved</a>
+                                </div>
+                            </li>  
+                                                    <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Data Requests
+                                </a>
+                                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a className="dropdown-item"  href="/sent-data-requests">Sent</a>
+                                    <a className="dropdown-item"  href="/recieved-data-requests">Recieved</a>
+                                </div>
+                            </li>        
                         {window.localStorage.getItem("token") != null &&
                             <a className="nav-link" href={"/view-doctor/"+window.localStorage.getItem("doctorID")}>Doctor Profile</a>
                         }
