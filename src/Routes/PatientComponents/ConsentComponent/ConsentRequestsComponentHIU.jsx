@@ -25,8 +25,11 @@ class ConsentRequestsComponentHIU extends Component {
 
     getConsents() {
         DoctorService.getConsentTransactionsHIU(window.localStorage.getItem("token")).then(res => {
-            let txns = res.data.consentTxns;
+            console.log(res)
+            let txns = res.data.consentreqs;
             DoctorService.getConsentObjectsHIU(window.localStorage.getItem("token")).then(res => {
+                console.log(res)
+
                 let consents = res.data.consent_objs;
                 console.log(consents)
                 console.log(txns)
