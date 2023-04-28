@@ -5,8 +5,8 @@ const DOCTOR_API_BASE_URL = '/doctor';
 const CITIES = '/cities';
 class DoctorService {
 
-    getDoctors() {
-        return ApiService.getAll(DOCTOR_API_BASE_URL + '/get-all');
+    getDoctors(token) {
+        return ApiService.getAuth(DOCTOR_API_BASE_URL + '/get-all', token);
     }
 
     getDoctorById(id) {
@@ -76,8 +76,8 @@ class DoctorService {
         return ApiService.put(DOCTOR_API_BASE_URL + '/' + doctor.id, doctor);
     }
 
-    getHospitals() { 
-        return ApiService.getAllDatas('/hospitals/fetch-all');
+    getHospitals(token) { 
+        return ApiService.getAuth('/hospitals/fetch-all', token);
     }
 
     getCities() {

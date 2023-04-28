@@ -45,7 +45,7 @@ export default class CreateConsentRequest extends Component {
     componentDidMount() {
     }
     getAllDoctors() {
-        DoctorService.getDoctors().then((res) => {
+        DoctorService.getDoctors(window.localStorage.getItem("token")).then((res) => {
             this.setState({ doctors: res.data.doctors })
         });
     }
@@ -55,7 +55,7 @@ export default class CreateConsentRequest extends Component {
         });
     }
     getAllHospitals() {
-        DoctorService.getHospitals().then(res => {
+        DoctorService.getHospitals(window.localStorage.getItem("token")).then(res => {
             this.setState({ hospitals: res.data.hospitals });
         });
     }

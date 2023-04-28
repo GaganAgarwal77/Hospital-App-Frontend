@@ -43,7 +43,7 @@ class ListDoctorComponent extends Component {
     } 
 
     reloadDoctorList() {
-        DoctorService.getDoctors().then((res) => {
+        DoctorService.getDoctors(window.localStorage.getItem("token")).then((res) => {
             this.setState({ doctors: res.data.doctors })
             filterAllDoctors = res.data
         });

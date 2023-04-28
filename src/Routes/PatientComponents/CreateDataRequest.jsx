@@ -57,13 +57,13 @@ export default class CreateDataRequest extends Component {
         });
     }
     getAllDoctors() {
-        DoctorService.getDoctors().then(res => {
+        DoctorService.getDoctors(window.localStorage.getItem("token")).then(res => {
             this.setState({ doctors: res.data });
         });
     }
 
     getAllHospitals() {
-        DoctorService.getHospitals().then(res => {
+        DoctorService.getHospitals(window.localStorage.getItem("token")).then(res => {
             this.setState({ hospitals: res.data });
         });
     }

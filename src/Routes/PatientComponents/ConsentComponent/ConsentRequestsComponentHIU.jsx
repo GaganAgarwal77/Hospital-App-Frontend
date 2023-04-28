@@ -20,24 +20,13 @@ class ConsentRequestsComponentHIU extends Component {
         }
     }
     componentDidMount() {
-        // this.getAllConsents();
-        // this.getConsentTransactions();
         this.getConsents();
     }
-    getAllConsents() {
-        DoctorService.getConsentObjectsHIU(this.state.id).then(res => {
-            this.setState({ consentObjects: res.data.consent_objs });
-        })
-    }
-    getConsentTransactions() { 
-        DoctorService.getConsentTransactionByDoctorId(this.state.id).then(res => {
-            this.setState({ transactions: res.data.consentTxns });
-        })
-    }
+
     getConsents() {
-        DoctorService.getConsentTransactionsHIU().then(res => {
+        DoctorService.getConsentTransactionsHIU(window.localStorage.getItem("token")).then(res => {
             let txns = res.data.consentTxns;
-            DoctorService.getConsentObjectsHIU().then(res => {
+            DoctorService.getConsentObjectsHIU(window.localStorage.getItem("token")).then(res => {
                 let consents = res.data.consent_objs;
                 console.log(consents)
                 console.log(txns)

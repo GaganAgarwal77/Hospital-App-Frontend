@@ -38,7 +38,7 @@ export default class ProblemFormComponent extends Component {
         this.getAllDoctors()
     }
     getAllDoctors() {
-        DoctorService.getDoctors().then(res => {
+        DoctorService.getDoctors(window.localStorage.getItem("token")).then(res => {
             this.setState({ doctors: res.data.doctors });
         });
     }
