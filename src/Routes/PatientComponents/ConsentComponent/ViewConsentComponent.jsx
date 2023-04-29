@@ -28,6 +28,7 @@ export default class ViewConsentComponent extends Component {
         this.loadPatient = this.loadPatient.bind(this);
         this.loadConsentObject = this.loadConsentObject.bind(this);
         this.loadConsentTransaction = this.loadConsentTransaction.bind(this);
+        this.openDataRequestForm = this.openDataRequestForm.bind(this);
     }
     componentDidMount() {
         this.loadPatient();
@@ -79,36 +80,12 @@ export default class ViewConsentComponent extends Component {
         this.props.history.push('/view-patient/' + id);
     }
     openDataRequestForm(){
-        window.localStorage.setItem("")
+        window.localStorage.setItem("patientID", this.state.id);
+        window.localStorage.setItem("consentID", this.state.consentid);
         this.props.history.push('/request-data');
     }
 
-    createDataRequest(){
-        let data = {
-            txnID: this.state.transaction.txnID,
-            ehrbID: this.state.consentObject.patient_ehrb_id,
-            hipID: this.state.consentObject.hip_id,
-            doctorID: this.state.consentObject.doctor_ehrb_id,
-            request_details: {
-                department: this.state.consentObject.departments,
-                hiType: this.state.consentObject.hi_type,
-                dateFrom: this.state.consentObject.date_from,
-                dateTo: this.state.consentObject.date_to,
-            },
-            request_message: "message"
-        }
-        DoctorService.createDataRequest(data, window.localStorage.getItem("token")).then(res => {
-            AlertifyService.alert("Data Request Created Successfully");
-            this.props.history.push('/patients');
-        }).catch((error) => {
-            if (error.response) {
-                AlertifyService.alert(error.response.data.message);
-                this.props.history.push('/patients');
-            }
-            else if (error.request) console.log(error.request);
-            else console.log(error.message);
-        });
-    }
+
     openReceipeForm(id, consentid) {
         window.localStorage.setItem("patientID", id);
         window.localStorage.setItem("consentID", consentid);
@@ -133,7 +110,7 @@ export default class ViewConsentComponent extends Component {
                             <button
                                 className="btn btn-danger"
                                 disabled={this.state.transaction.consent_status === "PENDING"  ? true : false}
-                                onClick={() => this.createDataRequest(this.state.patient.id)}>
+                                onClick={this.openDataRequestForm}>
                                 Create Data Request </button>
                         </div>
                         <div className="col-lg-6">

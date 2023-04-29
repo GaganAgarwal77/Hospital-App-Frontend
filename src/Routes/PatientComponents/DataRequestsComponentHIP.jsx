@@ -7,6 +7,7 @@ import "@material/react-checkbox/dist/checkbox.css";
 import AlertifyService from '../../services/AlertifyService';
 import { withRouter } from 'react-router'; 
 import DoctorService from '../../services/DoctorService';
+import PatientService from '../../services/PatientService';
 
 let filterAllConsent = [];
 let filters = ["consentName", "consentStatus"];
@@ -17,15 +18,32 @@ class DataRequestsComponentHIP extends Component {
             id: props.id,
             dataRequests: []
         }
+        this.getAll  = this.getAll.bind(this);
     }
     componentDidMount() {
-        // this.getAllConsents();
-        // this.getConsentTransactions();
-        this.getAllDataRequests();
+        this.getAll();
+    }
+
+    getAllPatients() {
+        PatientService.getPatients().then((res) => {
+            this.setState({ patients: res.data.patients })
+        });
+    }
+    getAllHospitals() {
+        DoctorService.getHospitals(window.localStorage.getItem("token")).then(res => {
+            this.setState({ hospitals: res.data.hospitals });
+        });
     }
     getAllDataRequests() {
         DoctorService.getDataRequestsHIP(window.localStorage.getItem('token')).then(res => {
-            this.setState({ dataRequests: res.data.dataRequests });
+            let requests = res.data.dataRequests;
+            for (let request in requests) {
+                let patient = this.state.patients.find(patient => patient.id === request.ehrbID);
+                let hospital = this.state.hospitals.find(hospital => hospital.hospitalId === request.hiuID);
+                request.patientName = patient.firstName + " " + patient.lastName;
+                request.hospitalName = hospital.hospitalName;
+            }
+            this.setState({ dataRequests: requests });
         })  
         // this.setState({ dataRequests: [
         //     {
@@ -39,6 +57,24 @@ class DataRequestsComponentHIP extends Component {
         //         "callback_url": "123-456-789"                
         //     }
         // ]});
+    }
+    getAll() {
+        PatientService.getPatients().then((res) => {
+            let patients = res.data.patients;
+            DoctorService.getHospitals(window.localStorage.getItem("token")).then(res => {
+                let hospitals = res.data.hospitals;
+                DoctorService.getDataRequestsHIP(window.localStorage.getItem('token')).then(res => {
+                    let requests = res.data.dataRequests;
+                    for (let request in requests) {
+                        let patient = patients.find(patient => patient.id === request.ehrbID);
+                        let hospital = hospitals.find(hospital => hospital.hospitalId === request.hiuID);
+                        request.patientName = patient.firstName + " " + patient.lastName;
+                        request.hospitalName = hospital.hospitalName;
+                    }
+                    this.setState({ dataRequests: requests });
+                }) 
+            });
+        });
     }
 
     onChangeSearchByStatusOrDate = (e) => { this.filterConsents(e.target.value); }
@@ -100,11 +136,12 @@ class DataRequestsComponentHIP extends Component {
                     <table className="table table-bordered table-sm table-dark table-hover">
                         <thead>
                             <tr>
-                                <th>Signed Consent Object</th>
+                                {/* <th>Signed Consent Object</th> */}
                                 <th>Transaction ID</th>
                                 <th>Request ID</th>
-                                <th>EHRB ID</th>
-                                <th>HIU ID</th>
+                                <th>Patient Name</th>
+                                <th>Patient EHRB ID</th>
+                                <th>HIU Name</th>
                                 <th>Request Message</th>
                                 <th>Callback URL</th>
                                 {/* <th>Action</th> */}
@@ -114,12 +151,13 @@ class DataRequestsComponentHIP extends Component {
                             {console.log(this.state)}
                             {this.state.dataRequests.map((dataRequest, index) =>
                                 <tr className="bg-default" key={dataRequest.id}>
-                                    <td style={{overflow:"hidden", textOverflow:"ellipsis", maxWidth:"10px"}}>{dataRequest.signed_consent_object}</td>
+                                    {/* <td style={{overflow:"hidden", textOverflow:"ellipsis", maxWidth:"10px"}}>{dataRequest.signed_consent_object}</td> */}
                                     <td>{dataRequest.txnID}</td>
                                     <td>{dataRequest.requestID}</td>
+                                    <td>{dataRequest.patientName}</td>
                                     <td>{dataRequest.ehrbID}</td>
-                                    <td>{dataRequest.hiuID}</td>
-                                    <td>{dataRequest.request_message}</td>
+                                    <td>{dataRequest.hospitalName}</td>
+                                    <td>{dataRequest.request_message == ''? 'request' : dataRequest.request_message}</td>
                                     <td>{dataRequest.callback_url}</td>
                                     {/* <td>
                                         <div className="btn-group" role="group">
