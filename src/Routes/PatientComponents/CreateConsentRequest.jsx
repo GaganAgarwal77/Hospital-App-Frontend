@@ -82,6 +82,8 @@ export default class CreateConsentRequest extends Component {
         // if (this.state.doctorid === '' || this.state.hiuId === '' || this.state.hipId === '' || this.state.hiType === '' || this.state.department === '') {
         //     AlertifyService.alert("Fill in the blanks");
         // } else {
+            console.log(this.state.dateFrom.toISOString().split('T')[0])
+            console.log(this.state.dateTo.toISOString().split('T')[0])
             if (this.state.id != null) {
                 // in doctors list find doctor with doctorid
                 let doctor = this.state.doctors.find(doctor => doctor.id === this.state.doctorid);
@@ -96,10 +98,10 @@ export default class CreateConsentRequest extends Component {
                     hiType: [this.state.hiType],
                     permission: {
                         dateRange : {
-                            from: this.state.dateFrom,
-                            to: this.state.dateTo
+                            from: this.state.dateFrom.toISOString().split('T')[0],
+                            to: this.state.dateTo.toISOString().split('T')[0]
                         },
-                        consent_validity: this.state.valdityTill
+                        consent_validity: this.state.valdityTill.toISOString().split('T')[0]
                     }
                 }
                 let consentObj = {
