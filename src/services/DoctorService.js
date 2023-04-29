@@ -46,11 +46,11 @@ class DoctorService {
     }
     
     getDataRequestsHIP(token) {
-        return ApiService.getAuth('/consent/fetch-data-requests-hip', token);
+        return ApiService.getAuth('/data/fetch-data-requests-hip', token);
     }
     
     getDataRequestsHIU(token) {
-        return ApiService.getAuth('/consent/fetch-data-requests-hiu', token);
+        return ApiService.getAuth('/data/fetch-data-requests-hiu', token);
     }
 
     deleteDoctor(Id) {

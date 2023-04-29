@@ -71,7 +71,7 @@ class LoginDoctorComponent extends Component {
                     <hr />
                 </div>
                 <div className="col-sm-8">
-                    <h2 className="text-center">ADD DOCTOR</h2>
+                    <h2 className="text-center">Doctor Login</h2>
                     <form>
                         <div className="form-group">
                             <label>Email:</label>
