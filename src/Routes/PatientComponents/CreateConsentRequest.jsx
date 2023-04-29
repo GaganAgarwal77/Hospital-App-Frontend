@@ -26,9 +26,9 @@ export default class CreateConsentRequest extends Component {
             doctor: null,
 
             hospitals: [],
-            hiuId: '',
+            hiuId: "908cf94b-7707-44c4-ad42-783d6461d4b8",
             hiu: null,
-            hipId: '',
+            hipId: 'cf0b81a7-4fae-437d-b318-96c08f82ffad',
             hip: null,
 
             hiType: "",
@@ -156,7 +156,7 @@ export default class CreateConsentRequest extends Component {
                                 )}
                             </select>
                         </fieldset> */}
-                        <fieldset className="form-group">
+                        {/* <fieldset className="form-group">
                             <label>HIU *</label>
                             <select className="form-control"
                                 value={this.state.hiu?.hospitalName}
@@ -165,7 +165,7 @@ export default class CreateConsentRequest extends Component {
                                     <option key={hiu.hospitalId} value={hiu.hospitalId}>{hiu.hospitalName}</option>
                                 )}
                             </select>
-                        </fieldset>
+                        </fieldset> */}
                         <fieldset className="form-group">
                             <label>HIP *</label>
                             <select className="form-control"
