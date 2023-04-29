@@ -6,7 +6,7 @@ const CITIES = '/cities';
 class DoctorService {
 
     getDoctors(token) {
-        return ApiService.getAuth(DOCTOR_API_BASE_URL + '/get-all', token);
+        return ApiService.getAll(DOCTOR_API_BASE_URL + '/get-all');
     }
 
     getDoctorById(id) {
