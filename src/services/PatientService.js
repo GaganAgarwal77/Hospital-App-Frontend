@@ -20,7 +20,7 @@ class PatientService {
         return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-records-by-id?patientID=' + id)   
     }
     getRecievedPatientRecordsById(id){
-        return ApiService.getAuth('/data/fetch-records?patientID=' + id, window.localStorage.getItem('token'))   
+        return ApiService.getAuth('/data/fetch-records?ehrbID=' + id, window.localStorage.getItem('token'))   
     }
     getRecordById(id){
         return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-record?recordID=' + id)   
