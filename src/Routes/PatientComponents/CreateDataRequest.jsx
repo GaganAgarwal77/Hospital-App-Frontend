@@ -60,7 +60,7 @@ export default class CreateDataRequest extends Component {
     loadConsentObject() {
         DoctorService.getConsentObjectByConsentID(this.state.consentid, window.localStorage.getItem("token")).then(res => {
             let data = res.data;
-            this.setState({ consentObject: data, hiType: data.hi_type.split(','), departments: data.departments.split(',') ,dateFrom: new Date(data.date_from), dateTo: new Date(data.date_to) });
+            this.setState({ consentObject: data, hiType: data.hi_type.toString(), departments: data.departments.toString() ,dateFrom: new Date(data.date_from), dateTo: new Date(data.date_to) });
 
         }).catch((error) => {
             if (error.response) {
