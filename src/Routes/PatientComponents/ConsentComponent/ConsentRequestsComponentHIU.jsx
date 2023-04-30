@@ -132,32 +132,11 @@ class ConsentRequestsComponentHIU extends Component {
                                         {transactions[index].consent_status}
                                     </td>
                                     <td>
-                                        <div className="btn-group" role="group">
-                                            <button id="btnGroupDrop1"
-                                                type="button"
-                                                className="btn btn-sm btn-secondary dropdown-toggle"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"> Actions </button>
-
-                                            <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                <button
-                                                    className="dropdown-item"
+                                    <button
+                                                    className="btn btn-primary"
                                                     onClick={() => this.viewConsent(consentObject.consent_object_id)} >
                                                     View </button>
-                                                <div className="dropdown-divider"></div>
-                                                <button
-                                                    className="dropdown-item"
-                                                    data-toggle="modal" data-target="#consentModal"
-                                                    onClick={() => this.viewQuickly(consentObject)} >
-                                                    View Quickly </button>
-                                                <div className="dropdown-divider"></div>
-                                                <button
-                                                    className="dropdown-item"
-                                                    onClick={() => this.deleteConsent(consentObject.consent_object_id)} >
-                                                    Delete </button>
-                                            </div>
-                                        </div>
+                                       
                                     </td>
                                 </tr>
                             )}

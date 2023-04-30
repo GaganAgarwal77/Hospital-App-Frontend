@@ -54,7 +54,7 @@ export default class NavbarComponent extends Component {
                             <a className="nav-link" href={"/view-doctor/"+window.localStorage.getItem("doctorID")}>Doctor Profile</a>
                         }
                                                     {window.localStorage.getItem("token") != null &&
-                            <a className="nav-link" type="submit" onClick={() => {window.localStorage.removeItem("token");window.location.reload()}}>Logout</a>}
+                            <a className="nav-link" type="submit" onClick={() => {window.localStorage.removeItem("token");this.props.history.push('/');window.location.reload()}}>Logout</a>}
                         </ul>
                     </div>
                 </nav>

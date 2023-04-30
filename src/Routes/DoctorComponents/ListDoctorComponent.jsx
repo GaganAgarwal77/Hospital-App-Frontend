@@ -170,32 +170,9 @@ class ListDoctorComponent extends Component {
                                         <td>{doctor.doctorEhrbID}</td>
                                         <td>{doctor.address}</td>
                                         <td>
-                                            <div className="btn-group" role="group">
-                                                <button id="btnGroupDrop1"
-                                                    type="button"
-                                                    className="btn btn-secondary btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown"
-                                                    aria-haspopup="true"
-                                                    aria-expanded="false"> Actions </button>
-                                                <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                    <button
-                                                        className="dropdown-item"
-                                                        onClick={() => this.viewDoctor(doctor.id)} >  View </button>
-                                                    <div className="dropdown-divider"></div>
-                                                    <button
-                                                        className="dropdown-item"
-                                                        data-toggle="modal" data-target="#DoctorModal"
-                                                        onClick={() => this.viewDoctorQuickly(doctor)} >  View Quickly </button>
-                                                    <div className="dropdown-divider"></div>
-                                                    <button
-                                                        className="dropdown-item"
-                                                        onClick={() => this.editDoctor(doctor.id)} > Edit</button>
-                                                    <div className="dropdown-divider"></div>
-                                                    <button
-                                                        className="dropdown-item"
-                                                        onClick={() => this.deleteDoctor(doctor.id)}> Delete </button>
-                                                </div>
-                                            </div>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => this.viewDoctor(doctor.id)} >  View </button>
                                         </td>
                                     </tr>
                                 )}

@@ -6,14 +6,14 @@ import "alertifyjs/build/css/themes/default.css";
 import "@material/react-checkbox/dist/checkbox.css";
 import ProblemService from '../../../services/ProblemService';
 import PatientService from '../../../services/PatientService';
-import DoctorService from '../../../services/DoctorService';
 import AlertifyService from '../../../services/AlertifyService';
 import { withRouter } from 'react-router'; 
 import ProblemDetailModal from '../../BasicComponent/ProblemDetailModal';
+import DoctorService from '../../../services/DoctorService';
 
 let filterAllProblem = [];
 let filters = ["problemName", "problemStatus"];
-class ProblemsComponent extends Component {
+class RecievedProblemsComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -28,16 +28,16 @@ class ProblemsComponent extends Component {
         this.getAllProblems();
     }
     getAllProblems() {
-        PatientService.getPatientRecordsById(this.state.id).then(res => {
-            let problems = res.data;
+        PatientService.getRecievedPatientRecordsById(this.state.id).then(res => {
+            let problems = res.data.patientData;
             DoctorService.getDoctors(window.localStorage.getItem("token")).then((res) => {
                 let doctors = res.data.doctors;
                 problems.forEach(problem => {
                     doctors.forEach(doctor => {
                         if (problem.doctorID === doctor.id) problem.doctorName = doctor.firstName + " " + doctor.lastName;
                     });
+                    this.setState({ problems: problems});
                 });
-                this.setState({ problems: problems });
             });
         }).catch((error) => {
             if (error.response) {
@@ -84,7 +84,7 @@ class ProblemsComponent extends Component {
     viewProblem(problemid) {
         window.localStorage.setItem("problemID", problemid);
         window.localStorage.setItem("patientID", this.state.id);
-        this.props.history.push('/record/' + problemid);
+        this.props.history.push('/recieved-record/' + problemid);
     }
     viewQuickly(problem){
         this.setState({problem:problem});
@@ -95,21 +95,25 @@ class ProblemsComponent extends Component {
           <div className="row">
             <div className="col-lg-12">
               <hr />
-              <p className="h3 d-flex justify-content-center">Records</p>
-              {/* <hr />
-                <div className="form-group">
+              <p className="h3 d-flex justify-content-center">
+                Recieved Records
+              </p>
+              <hr />
+              {/* <div className="form-group">
                     <input type="text"
                         placeholder="Search Problem by problem Name or problem Status"
                         name="searchByName"
                         className="form-control"
                         onChange={this.onChangeSearchByStatusOrDate}
                     />
-                </div> */}
-              <hr />
+                </div>
+                <hr /> */}
               <div className="table-responsive">
                 <table className="table table-bordered table-sm table-dark table-hover">
                   <thead>
                     <tr>
+                      <th>Request ID</th>
+                      <th>Txn ID</th>
                       <th>Doctor Name</th>
                       <th>Visit Type</th>
                       <th>Department</th>
@@ -120,6 +124,8 @@ class ProblemsComponent extends Component {
                   <tbody>
                     {problems.map((problem) => (
                       <tr className="bg-default" key={problem.recordID}>
+                        <td>{problem.requestID}</td>
+                        <td>{problem.txnID}</td>
                         <td>{problem.doctorName}</td>
                         <td>{problem.hiType}</td>
                         <td>{problem.department}</td>
@@ -150,4 +156,4 @@ class ProblemsComponent extends Component {
         );
     }
 }
-export default withRouter(ProblemsComponent);
+export default withRouter(RecievedProblemsComponent);

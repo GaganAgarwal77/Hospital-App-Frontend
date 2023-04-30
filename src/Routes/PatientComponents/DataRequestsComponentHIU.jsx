@@ -7,6 +7,7 @@ import "@material/react-checkbox/dist/checkbox.css";
 import AlertifyService from '../../services/AlertifyService';
 import { withRouter } from 'react-router'; 
 import DoctorService from '../../services/DoctorService';
+import PatientService from '../../services/PatientService';
 
 let filterAllConsent = [];
 let filters = ["consentName", "consentStatus"];
@@ -21,7 +22,7 @@ class DataRequestsComponentHIP extends Component {
     componentDidMount() {
         // this.getAllConsents();
         // this.getConsentTransactions();
-        this.getAllDataRequests();
+        this.getAll();
     }
     getAllDataRequests() {
         DoctorService.getDataRequestsHIU(window.localStorage.getItem('token')).then(res => {
@@ -40,7 +41,24 @@ class DataRequestsComponentHIP extends Component {
         //     }
         // ]});
     }
-
+    getAll() {
+        PatientService.getPatients().then((res) => {
+            let patients = res.data.patients;
+            DoctorService.getHospitals(window.localStorage.getItem("token")).then(res => {
+                let hospitals = res.data.hospitals;
+                DoctorService.getDataRequestsHIU(window.localStorage.getItem('token')).then(res => {
+                    let requests = res.data.dataRequests;
+                    for (let request in requests) {
+                        let patient = patients.find(patient => patient.id === request.ehrbID);
+                        let hospital = hospitals.find(hospital => hospital.hospitalId === request.hipID);
+                        request.patientName = patient.firstName + " " + patient.lastName;
+                        request.hospitalName = hospital.hospitalName;
+                    }
+                    this.setState({ dataRequests: requests });
+                }) 
+            });
+        });
+    }
     onChangeSearchByStatusOrDate = (e) => { this.filterConsents(e.target.value); }
     filterConsents(value) {
         var results = [];
@@ -102,8 +120,9 @@ class DataRequestsComponentHIP extends Component {
                             <tr>
                                 <th>Data Request ID</th>
                                 <th>Transaction ID</th>
-                                <th>EHRB ID</th>
-                                <th>HIP ID</th>
+                                <th>Patient Name</th>
+                                <th>Patient EHRB ID</th>
+                                <th>HIP Name</th>
                                 <th>Request Message</th>
                                 {/* <th>Action</th> */}
                             </tr>
@@ -114,8 +133,9 @@ class DataRequestsComponentHIP extends Component {
                                 <tr className="bg-default" key={dataRequest.data_request_id}>
                                     <td>{dataRequest.data_request_id}</td>
                                     <td>{dataRequest.txnID}</td>
+                                    <td>{dataRequest.patientName}</td>
                                     <td>{dataRequest.ehrbID}</td>
-                                    <td>{dataRequest.hipID}</td>
+                                    <td>{dataRequest.hospitalName}</td>
                                     <td>{dataRequest.request_message}</td>
                                     {/* <td>
                                         <div className="btn-group" role="group">

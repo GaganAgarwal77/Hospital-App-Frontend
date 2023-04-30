@@ -4,6 +4,7 @@ import PatientDetail from '../BasicComponent/PatientDetail';
 import AlertifyService from '../../services/AlertifyService';
 import ProblemsComponent from './ProblemComponent/ProblemsComponent';
 import CreateConsentRequest from './CreateConsentRequest';
+import RecievedProblemsComponent from './ProblemComponent/RecievedProblemsComponent';
 export default class ViewPatientComponent extends Component {
     constructor(props) {
         super(props)
@@ -68,6 +69,8 @@ export default class ViewPatientComponent extends Component {
                     <button
                         className="btn btn-danger"
                         onClick={() => this.back()}> Back </button>
+                    {window.localStorage.getItem("token") != null &&
+                    <>
                     <button
                         type="button"
                         className="btn btn-warning ml-1"
@@ -78,6 +81,7 @@ export default class ViewPatientComponent extends Component {
                         className="btn btn-warning ml-1"
                         onClick={() => this.viewConsentRequestForm(this.state.id)}
                         data-whatever="@getbootstrap">Request Consent</button>
+                    </>}
                     <hr />
                 </div>
                 {/* Patient Details */}
@@ -104,6 +108,9 @@ export default class ViewPatientComponent extends Component {
                 </div> 
                 <div className="col-lg-12">
                         <ProblemsComponent   id={this.state.id}/>
+                </div> 
+                <div className="col-lg-12">
+                        <RecievedProblemsComponent  id={this.state.id}/>
                 </div> 
             </div>
         )

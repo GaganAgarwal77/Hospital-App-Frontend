@@ -53,7 +53,7 @@ export default class ProblemFormComponent extends Component {
             errors.department = 'Enter department';
         }
         if (!values.hiType) {
-            errors.hiType = 'Enter visit type';
+            errors.hiType = 'Enter Health information type';
         }
         if (!values.height) {
             errors.height = 'Enter height';
@@ -162,7 +162,7 @@ export default class ProblemFormComponent extends Component {
                                 <ErrorMessage name="department" component="div" className="alert alert-danger text-danger" />
                             </fieldset>
                             <fieldset className="form-group">
-                                <label>Visit Type :</label>
+                                <label>Health Information Type :</label>
                                 <Field
                                     className="form-control"
                                     type="text"

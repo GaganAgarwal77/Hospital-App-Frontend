@@ -171,32 +171,10 @@ class ListPatientComponent extends Component {
                                         <td>{patient.ehrbID}</td>
                                         <td>{patient.address}</td>
                                         <td>
-                                            <div className="btn-group" role="group">
-                                                <button id="btnGroupDrop1"
-                                                    type="button"
-                                                    className="btn btn-secondary btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown"
-                                                    aria-haspopup="true"
-                                                    aria-expanded="false"> Actions </button>
-                                                <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                    <button
-                                                        className="dropdown-item"
+                                        <button
+                                                        className="btn btn-primary"
                                                         onClick={() => this.viewPatient(patient.id)} >  View </button>
-                                                    <div className="dropdown-divider"></div>
-                                                    <button
-                                                        className="dropdown-item"
-                                                        data-toggle="modal" data-target="#patientModal"
-                                                        onClick={() => this.viewPatientQuickly(patient)} >  View Quickly </button>
-                                                    <div className="dropdown-divider"></div>
-                                                    <button
-                                                        className="dropdown-item"
-                                                        onClick={() => this.editPatient(patient.id)} > Edit</button>
-                                                    <div className="dropdown-divider"></div>
-                                                    <button
-                                                        className="dropdown-item"
-                                                        onClick={() => this.deletePatient(patient.id)}> Delete </button>
-                                                </div>
-                                            </div>
+                                            
                                         </td>
                                     </tr>
                                 )}

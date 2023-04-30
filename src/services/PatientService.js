@@ -19,8 +19,14 @@ class PatientService {
     getPatientRecordsById(id){
         return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-records-by-id?patientID=' + id)   
     }
+    getRecievedPatientRecordsById(id){
+        return ApiService.getAuth('/data/fetch-records?patientID=' + id, window.localStorage.getItem('token'))   
+    }
     getRecordById(id){
         return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-record?recordID=' + id)   
+    }
+    getRecievedRecordById(id){
+        return ApiService.getAuth('/data/fetch-records-by-id?recordID=' + id, window.localStorage.getItem('token'))   
     }
     addPatientRecord(patientRecord){
         return ApiService.post(PATIENT_API_BASE_URL + '/add-record', patientRecord);

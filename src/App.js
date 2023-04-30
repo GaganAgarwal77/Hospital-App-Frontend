@@ -24,6 +24,7 @@ import ConsentRequestsComponentHIP from './Routes/PatientComponents/ConsentCompo
 import DataRequestsComponentHIP from './Routes/PatientComponents/DataRequestsComponentHIP';
 import DataRequestsComponentHIU from './Routes/PatientComponents/DataRequestsComponentHIU';
 import ConsentRequestsComponentHIU from './Routes/PatientComponents/ConsentComponent/ConsentRequestsComponentHIU';
+import ViewRecievedProblemComponent from './Routes/PatientComponents/ProblemComponent/ViewRecievedProblemComponent';
 // https://www.youtube.com/watch?v=DQ93TxqKkWo
 function App() {
   return (            
@@ -63,6 +64,7 @@ function App() {
                 
                 <Route path="/add-record" component={ProblemFormComponent} />
                 <Route path="/record/:recordid" component={ViewProblemComponent} />
+                <Route path="/recieved-record/:recordid" component={ViewRecievedProblemComponent} />
                 <Route path="/receipe-form" component={ReceipeFormComponent} />
                 <Route path="/notfound" component={NotFoundComponent} />
                 <Route path="/de" component={IndexPage2} />

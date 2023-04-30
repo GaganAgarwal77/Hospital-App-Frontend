@@ -19,7 +19,8 @@ class AddDoctorComponent extends Component {
             status: 1,
             cities: [],
             ehrbID: '',
-            password: ''
+            password: '',
+            department: ''
         }
         // this.saveUser = this.saveUser.bind(this);
     }
@@ -39,7 +40,7 @@ class AddDoctorComponent extends Component {
                 phoneString : this.state.phoneNo,
                 gender : this.state.gender,
                 address : this.state.city,
-                Department : "department",
+                department : this.state.department,
                 ehrbID : this.state.ehrbID,
             }
             console.log(doctor)
@@ -77,7 +78,7 @@ class AddDoctorComponent extends Component {
             const day = date.getDay(date);
             return day !== 0 && day !== 6;
         };
-        let { ehrbID, name, lastname,phoneNo, email, password, bornDate, gender, city } = this.state;
+        let { ehrbID, name, lastname,phoneNo, email, password, gender, city, department } = this.state;
         return (
             <div className="row">
                 <div className="col-sm-12">
@@ -87,7 +88,7 @@ class AddDoctorComponent extends Component {
                     <hr />
                 </div>
                 <div className="col-sm-8">
-                    <h2 className="text-center">ADD DOCTOR</h2>
+                    <h2 className="text-center">Doctor Register</h2>
                     <form>
                     <div className="form-group">
                             <label>EHRB ID *</label>
@@ -114,21 +115,8 @@ class AddDoctorComponent extends Component {
                             <input placeholder="Password" name="password" className="form-control"  type="password" value={password} onChange={e => this.onChangeData('password', e.target.value)} />
                         </div>
                         <div className="form-group">
-                            <label>Born Date *</label>
-                            <div className="form-group">
-                                <DatePicker
-                                    className="form-control"
-                                    // showTimeSelect
-                                    showTimeInput
-                                    selected={bornDate}
-                                    onChange={e => this.onChangeData('bornDate', e)}
-                                    filterDate={isWeekday}          // disable weekend
-                                    timeIntervals={15}              // time range around 15 min
-                                    //showWeekNumbers               // show week number
-                                    timeFormat="HH:mm"              // show time format
-                                    dateFormat="yyyy/MM/dd h:mm aa" // show all of time format
-                                />
-                            </div>
+                            <label>Deparment *</label>
+                            <input type="text" placeholder="department" name="department" className="form-control" value={department} onChange={e => this.onChangeData('department', e.target.value)} />
                         </div>
                         <div className="form-group">
                             <label>Gender *</label>
