@@ -112,7 +112,6 @@ class RecievedProblemsComponent extends Component {
                 <table className="table table-bordered table-sm table-dark table-hover">
                   <thead>
                     <tr>
-                      <th>Request ID</th>
                       <th>Txn ID</th>
                       <th>Doctor Name</th>
                       <th>Visit Type</th>
@@ -124,7 +123,6 @@ class RecievedProblemsComponent extends Component {
                   <tbody>
                     {problems.map((problem) => (
                       <tr className="bg-default" key={problem.recordID}>
-                        <td>{problem.requestID}</td>
                         <td>{problem.txnID}</td>
                         <td>{problem.doctorName}</td>
                         <td>{problem.hiType}</td>
