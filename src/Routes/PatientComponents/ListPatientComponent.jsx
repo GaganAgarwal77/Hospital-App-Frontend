@@ -71,8 +71,9 @@ class ListPatientComponent extends Component {
             cancel => { alertify.error('Cancel'); }
         ).set({ title: "Attention" }).set({ transition: 'slide' }).show();
     }
-    viewPatient(id) {
+    viewPatient(id, ehrbID) {
         window.localStorage.setItem("patientID", id);
+        window.localStorage.setItem("patientEhrbID", ehrbID);
         this.props.history.push('/view-patient/' + id);
     }
     addPatient() {
@@ -173,7 +174,7 @@ class ListPatientComponent extends Component {
                                         <td>
                                         <button
                                                         className="btn btn-primary"
-                                                        onClick={() => this.viewPatient(patient.id)} >  View </button>
+                                                        onClick={() => this.viewPatient(patient.id, patient.ehrbID)} >  View </button>
                                             
                                         </td>
                                     </tr>

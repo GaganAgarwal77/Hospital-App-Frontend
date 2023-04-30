@@ -28,7 +28,7 @@ class RecievedProblemsComponent extends Component {
         this.getAllProblems();
     }
     getAllProblems() {
-        PatientService.getRecievedPatientRecordsById(this.state.id).then(res => {
+        PatientService.getRecievedPatientRecordsById(window.localStorage.getItem("patientEhrbID")).then(res => {
             let problems = res.data.patientData;
             DoctorService.getDoctors(window.localStorage.getItem("token")).then((res) => {
                 let doctors = res.data.doctors;

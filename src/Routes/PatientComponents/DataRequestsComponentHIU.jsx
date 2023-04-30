@@ -50,13 +50,13 @@ class DataRequestsComponentHIP extends Component {
                     let requests = res.data.dataRequests;
                     for (let request in requests) {
                         patients.forEach(patient => {
-                            if (patient.ehrbID === request.ehrbID) {
+                            if (patient.ehrbID == request.ehrbID) {
                                 console.log(patient)
                                 request["patientName"] = patient.firstName + " " + patient.lastName;
                             }  
                         });
                         hospitals.forEach(hospital => {
-                            if (hospital.hospitalId === request.hipID) {
+                            if (hospital.hospitalId == request.hipID) {
                                 console.log(hospital)
                                 request["hospitalName"] = hospital.hospitalName;
                             }
