@@ -29,10 +29,15 @@ class ConsentRequestsComponentHIU extends Component {
             let txns = res.data.consentreqs;
             DoctorService.getConsentObjectsHIU(window.localStorage.getItem("token")).then(res => {
                 console.log(res)
-
                 let consents = res.data.consent_objs;
                 console.log(consents)
                 console.log(txns)
+                consents.forEach(consent => {
+                    let txn = txns.find(txn => txn.consent_object_id.consent_object_id === consent.consent_object_id);
+                    if (txn) {
+                        consent.consent_status = txn.consent_status;
+                    }
+                })                        
                 this.setState({ consentObjects: consents, transactions: txns });
             })
         })
@@ -129,7 +134,7 @@ class ConsentRequestsComponentHIU extends Component {
                                         </Moment>
                                     </td>
                                     <td>
-                                        {transactions[index].consent_status}
+                                        {consentObject.consent_status}
                                     </td>
                                     <td>
                                     <button
