@@ -165,7 +165,7 @@ export default class CreateConsentRequest extends Component {
                         <fieldset className="form-group">
                             <label>HIP *</label>
                             <select className="form-control"
-                                value={this.state.hip?.hospitalName}
+                                value={this.state.hip?.hospitalId}
                                 onChange={e => this.onChangeData('hipId', e.target.value)} >
                                 {this.state.hospitals.map(hip =>
                                     <option key={hip.hospitalId} value={hip.hospitalId}>{hip.hospitalName}</option>
