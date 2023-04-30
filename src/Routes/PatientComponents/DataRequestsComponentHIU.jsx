@@ -49,10 +49,12 @@ class DataRequestsComponentHIP extends Component {
                 DoctorService.getDataRequestsHIU(window.localStorage.getItem('token')).then(res => {
                     let requests = res.data.dataRequests;
                     for (let request in requests) {
-                        let patient = patients.find(patient => patient.id === request.ehrbID);
+                        let patient = patients.find(patient => patient.ehrbID === request.ehrbID);
                         let hospital = hospitals.find(hospital => hospital.hospitalId === request.hipID);
-                        request.patientName = patient.firstName + " " + patient.lastName;
-                        request.hospitalName = hospital.hospitalName;
+                        console.log(patient, hospital)
+                        request["patientName"] = patient.firstName + " " + patient.lastName;
+                        request["hospitalName"] = hospital.hospitalName;
+                        console.log(request)
                     }
                     this.setState({ dataRequests: requests });
                 }) 
