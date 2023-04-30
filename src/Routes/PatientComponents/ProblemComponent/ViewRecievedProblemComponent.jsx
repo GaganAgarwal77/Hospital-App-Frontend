@@ -100,7 +100,7 @@ export default class ViewRecievedProblemComponent extends Component {
                             city={patient.address}
                             bornDate={Date("2000-03-25")}
                             gender={patient.gender}
-                            showButtons={true}
+                            showButtons={false}
                             // array={['id','name','lastname','email','city','bornDate','gender']}
                         />
                         </div>

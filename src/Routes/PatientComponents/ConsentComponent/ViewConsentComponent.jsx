@@ -123,7 +123,7 @@ export default class ViewConsentComponent extends Component {
                             city={patient.address}
                             bornDate={Date("2000-03-25")}
                             gender={patient.gender}
-                            showButtons={true}
+                            showButtons={false}
                             // array={['id','name','lastname','email','city','bornDate','gender']}
                         />
                         </div>
@@ -142,7 +142,7 @@ export default class ViewConsentComponent extends Component {
                                 toDate = {this.state.consentObject.date_to}
                                 validityTill = {this.state.consentObject.valdity} 
                                 consentStatus={this.state.transaction.consent_status}
-                                showButtons={true}
+                                showButtons={false}
                             />
                         </div>
                     </div>

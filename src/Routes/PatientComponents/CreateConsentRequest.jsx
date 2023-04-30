@@ -55,7 +55,7 @@ export default class CreateConsentRequest extends Component {
         });
     }
     getAllHospitals() {
-        DoctorService.getHospitals(window.localStorage.getItem("token")).then(res => {
+        DoctorService.getPatientHospitals(this.state.patient.ehrbID,window.localStorage.getItem("token")).then(res => {
             this.setState({ hospitals: res.data.hospitals });
         });
     }

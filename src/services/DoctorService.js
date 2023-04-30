@@ -77,9 +77,11 @@ class DoctorService {
     }
 
     getHospitals(token) { 
-        return ApiService.getAuth('/hospitals/fetch-all', token);
+        return ApiService.getAuth('/hospitals/fetch-all-hospitals', token);
     }
-
+    getPatientHospitals(id, token) {
+        return ApiService.getAuth('/hospitals/fetch-all?ehrbID='+id, token);
+    }
     getCities() {
         return ApiService.getAllDatas(DOCTOR_API_BASE_URL+CITIES);
     }

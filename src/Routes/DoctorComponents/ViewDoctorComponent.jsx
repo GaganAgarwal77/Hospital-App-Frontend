@@ -77,7 +77,7 @@ export default class ViewDoctorComponent extends Component {
                             city={doctor.address}
                             bornDate={Date("2000-03-25")}
                             gender={doctor.gender}
-                            showButtons={true}
+                            showButtons={false}
                             // array={['id','name','lastname','email','city','bornDate','gender']}
                         />
                         : null}
