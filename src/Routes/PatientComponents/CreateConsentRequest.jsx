@@ -20,7 +20,6 @@ export default class CreateConsentRequest extends Component {
 
             patientid: window.localStorage.getItem("patientID"),
             patient: null,
-
             doctors: [],
             doctorid: window.localStorage.getItem("doctorID"),
             doctor: null,
@@ -39,8 +38,7 @@ export default class CreateConsentRequest extends Component {
             valdityTill: new Date()
         }
         this.getAllDoctors()
-        this.getPatient()
-        this.getAllHospitals()
+        this.getPatientAndHospitals()
     }
     componentDidMount() {
     }
@@ -49,14 +47,12 @@ export default class CreateConsentRequest extends Component {
             this.setState({ doctors: res.data.doctors })
         });
     }
-    getPatient(){
+    getPatientAndHospitals(){
         PatientService.getPatientById(this.state.id).then((res) => {
-            this.setState({ patient: res.data })
-        });
-    }
-    getAllHospitals() {
-        DoctorService.getPatientHospitals(this.state.patient.ehrbID,window.localStorage.getItem("token")).then(res => {
-            this.setState({ hospitals: res.data.hospitals });
+            let patient = res.data;
+            DoctorService.getPatientHospitals(patient.ehrbID,window.localStorage.getItem("token")).then(res => {
+                this.setState({ hospitals: res.data.hospitals, patient: patient});
+            });
         });
     }
 

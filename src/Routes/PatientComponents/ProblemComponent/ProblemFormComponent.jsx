@@ -254,6 +254,7 @@ export default class ProblemFormComponent extends Component {
                                     //showWeekNumbers               // show week number
                                     timeFormat="HH:mm"              // show time format
                                     dateFormat="yyyy/MM/dd h:mm aa" // show all of time format
+                                    disabled
                                 />
                             </fieldset>
                             <div className="modal-footer">

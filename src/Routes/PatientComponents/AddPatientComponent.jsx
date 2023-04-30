@@ -97,7 +97,7 @@ class AddPatientComponent extends Component {
                         </div>
                         <div className="form-group">
                             <label>Phone *</label>
-                            <input placeholder="Last name" name="phone No" className="form-control" value={phoneNo} onChange={e => this.onChangeData('phoneNo', e.target.value)} />
+                            <input placeholder="Phone" name="phoneNo" className="form-control" value={phoneNo} onChange={e => this.onChangeData('phoneNo', e.target.value)} />
                         </div>
                         <div className="form-group">
                             <label>Email:</label>
