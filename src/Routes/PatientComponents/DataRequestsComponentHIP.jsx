@@ -37,11 +37,12 @@ class DataRequestsComponentHIP extends Component {
     getAllDataRequests() {
         DoctorService.getDataRequestsHIP(window.localStorage.getItem('token')).then(res => {
             let requests = res.data.dataRequests;
+            console.log(requests)
             for (let request in requests) {
                 let patient = this.state.patients.find(patient => patient.id === request.ehrbID);
                 let hospital = this.state.hospitals.find(hospital => hospital.hospitalId === request.hiuID);
                 request.patientName = patient.firstName + " " + patient.lastName;
-                request.hospitalName = hospital.hospitalName;
+                request.hiuName = hospital.hospitalName;
             }
             this.setState({ dataRequests: requests });
         })  
@@ -71,7 +72,7 @@ class DataRequestsComponentHIP extends Component {
                         if(patient)
                             request.patientName = patient.firstName + " " + patient.lastName;
                         if(hospital)
-                            request.hipName = hospital.hospitalName
+                            request.hiuName = hospital.hospitalName
                         console.log(request)
                     })
                     this.setState({ dataRequests: requests });
@@ -159,7 +160,7 @@ class DataRequestsComponentHIP extends Component {
                                     <td>{dataRequest.requestID}</td>
                                     <td>{dataRequest.patientName}</td>
                                     <td>{dataRequest.ehrbID}</td>
-                                    <td>{dataRequest.hospitalName}</td>
+                                    <td>{dataRequest.hiuName}</td>
                                     <td>{dataRequest.request_message == ''? 'request' : dataRequest.request_message}</td>
                                     <td>{dataRequest.callback_url}</td>
                                     {/* <td>
