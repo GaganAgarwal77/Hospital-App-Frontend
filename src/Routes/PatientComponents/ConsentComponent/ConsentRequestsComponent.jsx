@@ -7,6 +7,7 @@ import "@material/react-checkbox/dist/checkbox.css";
 import AlertifyService from '../../../services/AlertifyService';
 import { withRouter } from 'react-router'; 
 import DoctorService from '../../../services/DoctorService';
+import PatientService from '../../../services/PatientService';
 
 let filterAllConsent = [];
 let filters = ["consentName", "consentStatus"];
@@ -35,13 +36,41 @@ class ConsentRequestsComponent extends Component {
         })
     }
     getConsents() {
-        DoctorService.getConsentTransactionByDoctorId(this.state.id).then(res => {
-            let txns = res.data.consentTxns;
-            DoctorService.getConsentObjectByDoctorId(this.state.id).then(res => {
-                let consents = res.data.consent_objs;
-                console.log(consents)
-                console.log(txns)
-                this.setState({ consentObjects: consents, transactions: txns });
+        PatientService.getPatients().then((res) => {
+            let patients = res.data.patients
+            DoctorService.getDoctors(window.localStorage.getItem("token")).then((res) => {
+                let doctors = res.data.doctors
+                console.log(doctors)
+                DoctorService.getHospitals(window.localStorage.getItem("token")).then(res => {
+                    let hospitals = res.data.hospitals
+                    console.log(hospitals)
+                    DoctorService.getConsentTransactionByDoctorId(this.state.id, window.localStorage.getItem("token")).then(res => {
+                    let txns = res.data.consentTxns;
+                    DoctorService.getConsentObjectByDoctorId(this.state.id, window.localStorage.getItem("token")).then(res => {
+                        console.log(res)
+                        let consents = res.data.consent_objs;
+                        console.log(consents)
+                        console.log(txns)
+                        consents.forEach(consent => {
+                            let txn = txns.find(txn => txn.consent_object_id.consent_object_id === consent.consent_object_id);
+                            let patient = patients.find(patient => patient.ehrbID === consent.patient_ehrb_id);
+                            let doctor = doctors.find(doctor => doctor.doctorEhrbID === consent.doctor_ehrb_id);
+                            let hospital = hospitals.find(hospital => hospital.hospitalId === consent.hip_id);
+                            console.log(hospital)
+                            if (txn) {
+                                consent.consent_status = txn.consent_status;
+                                if(patient)
+                                    consent.patientName = patient.firstName + " " + patient.lastName;
+                                if(doctor)
+                                    consent.doctorName = doctor.firstName + " " + doctor.lastName;
+                                if(hospital)
+                                    consent.hipName = hospital.hospitalName
+                            }
+                        })  
+                        this.setState({ consentObjects: consents, transactions: txns });
+                    });
+                });
+            });                       
             })
         })
     }
@@ -104,8 +133,8 @@ class ConsentRequestsComponent extends Component {
                     <table className="table table-bordered table-sm table-dark table-hover">
                         <thead>
                             <tr>
-                                <th>Patient ID</th>
-                                <th>HIP ID</th>
+                                <th>Patient Name</th>
+                                <th>HIP Name</th>
                                 <th>Date From</th>
                                 <th>Date To</th>
                                 <th>Valid Till</th>
@@ -117,8 +146,8 @@ class ConsentRequestsComponent extends Component {
                             {console.log(this.state)}
                             {this.state.consentObjects.map((consentObject, index) =>
                                 <tr className="bg-default" key={consentObject.consent_object_id}>
-                                    <td>{consentObject.patient_ehrb_id}</td>
-                                    <td>{consentObject.hip_id}</td>
+                                    <td>{consentObject.patientName}</td>
+                                    <td>{consentObject.hipName}</td>
                                     <td>
                                         <Moment format="YYYY/MM/DD HH:mm">
                                             {consentObject.date_from}
@@ -138,32 +167,11 @@ class ConsentRequestsComponent extends Component {
                                         {transactions[index].consent_status}
                                     </td>
                                     <td>
-                                        <div className="btn-group" role="group">
-                                            <button id="btnGroupDrop1"
-                                                type="button"
-                                                className="btn btn-sm btn-secondary dropdown-toggle"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"> Actions </button>
-
-                                            <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                <button
-                                                    className="dropdown-item"
-                                                    onClick={() => this.viewConsent(consentObject.consent_object_id)} >
-                                                    View </button>
-                                                <div className="dropdown-divider"></div>
-                                                <button
-                                                    className="dropdown-item"
-                                                    data-toggle="modal" data-target="#consentModal"
-                                                    onClick={() => this.viewQuickly(consentObject)} >
-                                                    View Quickly </button>
-                                                <div className="dropdown-divider"></div>
-                                                <button
-                                                    className="dropdown-item"
-                                                    onClick={() => this.deleteConsent(consentObject.consent_object_id)} >
-                                                    Delete </button>
-                                            </div>
-                                        </div>
+                                    <button
+                                    className="btn btn-primary"
+                                    onClick={() => this.viewConsent(consentObject.consent_object_id)} >
+                                    View </button>
+                                        
                                     </td>
                                 </tr>
                             )}

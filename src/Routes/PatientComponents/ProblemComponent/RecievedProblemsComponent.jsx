@@ -30,12 +30,13 @@ class RecievedProblemsComponent extends Component {
     getAllProblems() {
         PatientService.getRecievedPatientRecordsById(window.localStorage.getItem("patientEhrbID")).then(res => {
             let problems = res.data.patientData;
+            console.log(problems)
             DoctorService.getDoctors(window.localStorage.getItem("token")).then((res) => {
                 let doctors = res.data.doctors;
+                console.log(doctors)
                 problems.forEach(problem => {
-                    doctors.forEach(doctor => {
-                        if (problem.doctorID === doctor.id) problem.doctorName = doctor.firstName + " " + doctor.lastName;
-                    });
+                    let doctor = doctors.find(doctor => doctor.doctorEhrbID === problem.doctorID);
+                      if (doctor) problem.doctorName = doctor.firstName + " " + doctor.lastName;
                     this.setState({ problems: problems});
                 });
             });
@@ -124,7 +125,7 @@ class RecievedProblemsComponent extends Component {
                     {problems.map((problem) => (
                       <tr className="bg-default" key={problem.recordID}>
                         <td>{problem.txnID}</td>
-                        <td>{problem.doctorName}</td>
+                        <td>{problem.doctorID}</td>
                         <td>{problem.hiType}</td>
                         <td>{problem.department}</td>
                         <td>

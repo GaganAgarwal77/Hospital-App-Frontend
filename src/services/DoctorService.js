@@ -17,12 +17,12 @@ class DoctorService {
     //     return axios.get(DOCTOR_API_BASE_URL + '/find-by-email/' + email);
     // }
 
-    getConsentObjectByDoctorId(id) {
-        return ApiService.getAll('/consent/fetch-id?doctorID='+id);
+    getConsentObjectByDoctorId(id, token) {
+        return ApiService.getAuth('/consent/fetch-id?doctorID='+id, token);
     }
 
-    getConsentTransactionByDoctorId(id) {
-        return ApiService.getAll('/consent/consent-transaction-by-doctor?doctorID='+id);
+    getConsentTransactionByDoctorId(id, token) {
+        return ApiService.getAuth('/consent/consent-transaction-by-doctor?doctorID='+id, token);
     }
 
     getConsentObjectByConsentID(id, token) {

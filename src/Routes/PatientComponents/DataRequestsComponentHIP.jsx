@@ -65,12 +65,15 @@ class DataRequestsComponentHIP extends Component {
                 let hospitals = res.data.hospitals;
                 DoctorService.getDataRequestsHIP(window.localStorage.getItem('token')).then(res => {
                     let requests = res.data.dataRequests;
-                    for (let request in requests) {
-                        let patient = patients.find(patient => patient.id === request.ehrbID);
+                    requests.forEach((request) => {
+                        let patient = patients.find(patient => patient.ehrbID === request.ehrbID);
                         let hospital = hospitals.find(hospital => hospital.hospitalId === request.hiuID);
-                        request.patientName = patient.firstName + " " + patient.lastName;
-                        request.hospitalName = hospital.hospitalName;
-                    }
+                        if(patient)
+                            request.patientName = patient.firstName + " " + patient.lastName;
+                        if(hospital)
+                            request.hipName = hospital.hospitalName
+                        console.log(request)
+                    })
                     this.setState({ dataRequests: requests });
                 }) 
             });

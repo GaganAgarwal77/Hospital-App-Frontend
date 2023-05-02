@@ -7,6 +7,7 @@ import "@material/react-checkbox/dist/checkbox.css";
 import AlertifyService from '../../../services/AlertifyService';
 import { withRouter } from 'react-router'; 
 import DoctorService from '../../../services/DoctorService';
+import PatientService from '../../../services/PatientService';
 
 let filterAllConsent = [];
 let filters = ["consentName", "consentStatus"];
@@ -22,23 +23,43 @@ class ConsentRequestsComponentHIU extends Component {
     componentDidMount() {
         this.getConsents();
     }
-
+    
     getConsents() {
-        DoctorService.getConsentTransactionsHIU(window.localStorage.getItem("token")).then(res => {
-            console.log(res)
-            let txns = res.data.consentreqs;
-            DoctorService.getConsentObjectsHIU(window.localStorage.getItem("token")).then(res => {
-                console.log(res)
-                let consents = res.data.consent_objs;
-                console.log(consents)
-                console.log(txns)
-                consents.forEach(consent => {
-                    let txn = txns.find(txn => txn.consent_object_id.consent_object_id === consent.consent_object_id);
-                    if (txn) {
-                        consent.consent_status = txn.consent_status;
-                    }
-                })                        
-                this.setState({ consentObjects: consents, transactions: txns });
+        PatientService.getPatients().then((res) => {
+            let patients = res.data.patients
+            DoctorService.getDoctors(window.localStorage.getItem("token")).then((res) => {
+                let doctors = res.data.doctors
+                console.log(doctors)
+                DoctorService.getHospitals(window.localStorage.getItem("token")).then(res => {
+                    let hospitals = res.data.hospitals
+                    console.log(hospitals)
+                    DoctorService.getConsentTransactionsHIU(window.localStorage.getItem("token")).then(res => {
+                    let txns = res.data.consentreqs;
+                    DoctorService.getConsentObjectsHIU(window.localStorage.getItem("token")).then(res => {
+                        console.log(res)
+                        let consents = res.data.consent_objs;
+                        console.log(consents)
+                        console.log(txns)
+                        consents.forEach(consent => {
+                            let txn = txns.find(txn => txn.consent_object_id.consent_object_id === consent.consent_object_id);
+                            let patient = patients.find(patient => patient.ehrbID === consent.patient_ehrb_id);
+                            let doctor = doctors.find(doctor => doctor.doctorEhrbID === consent.doctor_ehrb_id);
+                            let hospital = hospitals.find(hospital => hospital.hospitalId === consent.hip_id);
+                            console.log(hospital)
+                            if (txn) {
+                                consent.consent_status = txn.consent_status;
+                                if(patient)
+                                    consent.patientName = patient.firstName + " " + patient.lastName;
+                                if(doctor)
+                                    consent.doctorName = doctor.firstName + " " + doctor.lastName;
+                                if(hospital)
+                                    consent.hipName = hospital.hospitalName
+                            }
+                        })  
+                        this.setState({ consentObjects: consents, transactions: txns });
+                    });
+                });
+            });                       
             })
         })
     }
@@ -101,9 +122,9 @@ class ConsentRequestsComponentHIU extends Component {
                     <table className="table table-bordered table-sm table-dark table-hover">
                         <thead>
                             <tr>
-                                <th>Patient ABHA ID</th>
-                                <th>Doctor ABHA ID</th>
-                                <th>HIP ID</th>
+                                <th>Patient Name</th>
+                                <th>Doctor Name</th>
+                                <th>HIP Name</th>
                                 <th>Date From</th>
                                 <th>Date To</th>
                                 <th>Valid Till</th>
@@ -115,9 +136,9 @@ class ConsentRequestsComponentHIU extends Component {
                             {console.log(this.state)}
                             {this.state.consentObjects.map((consentObject, index) =>
                                 <tr className="bg-default" key={consentObject.consent_object_id}>
-                                    <td>{consentObject.patient_ehrb_id}</td>
-                                    <td>{consentObject.doctor_ehrb_id}</td>
-                                    <td>{consentObject.hip_id}</td>
+                                    <td>{consentObject.patientName}</td>
+                                    <td>{consentObject.doctorName}</td>
+                                    <td>{consentObject.hipName}</td>
                                     <td>
                                         <Moment format="YYYY/MM/DD HH:mm">
                                             {consentObject.date_from}

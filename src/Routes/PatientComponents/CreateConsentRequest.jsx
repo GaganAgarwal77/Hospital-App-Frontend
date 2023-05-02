@@ -25,7 +25,7 @@ export default class CreateConsentRequest extends Component {
             doctor: null,
 
             hospitals: [],
-            hiuId: "908cf94b-7707-44c4-ad42-783d6461d4b8",
+            hiuId: "8538cb68-3781-4ffa-869a-a5d600a6dcab",
             hiu: null,
             hipId: 'cf0b81a7-4fae-437d-b318-96c08f82ffad',
             hip: null,

@@ -44,25 +44,21 @@ class DataRequestsComponentHIP extends Component {
     getAll() {
         PatientService.getPatients().then((res) => {
             let patients = res.data.patients;
+            console.log(patients)
             DoctorService.getHospitals(window.localStorage.getItem("token")).then(res => {
                 let hospitals = res.data.hospitals;
+                console.log(hospitals)
                 DoctorService.getDataRequestsHIU(window.localStorage.getItem('token')).then(res => {
                     let requests = res.data.dataRequests;
-                    for (let request in requests) {
-                        patients.forEach(patient => {
-                            if (patient.ehrbID == request.ehrbID) {
-                                console.log(patient)
-                                request["patientName"] = patient.firstName + " " + patient.lastName;
-                            }  
-                        });
-                        hospitals.forEach(hospital => {
-                            if (hospital.hospitalId == request.hipID) {
-                                console.log(hospital)
-                                request["hospitalName"] = hospital.hospitalName;
-                            }
-                        });
+                    requests.forEach((request) => {
+                        let patient = patients.find(patient => patient.ehrbID === request.ehrbID);
+                        let hospital = hospitals.find(hospital => hospital.hospitalId === request.hipID);
+                        if(patient)
+                            request.patientName = patient.firstName + " " + patient.lastName;
+                        if(hospital)
+                            request.hipName = hospital.hospitalName
                         console.log(request)
-                    }
+                    })
                     this.setState({ dataRequests: requests });
                 }) 
             });
@@ -144,7 +140,7 @@ class DataRequestsComponentHIP extends Component {
                                     <td>{dataRequest.txnID}</td>
                                     <td>{dataRequest.patientName}</td>
                                     <td>{dataRequest.ehrbID}</td>
-                                    <td>{dataRequest.hospitalName}</td>
+                                    <td>{dataRequest.hipName}</td>
                                     <td>{dataRequest.request_message}</td>
                                     {/* <td>
                                         <div className="btn-group" role="group">
